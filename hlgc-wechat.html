@@ -711,7 +711,7 @@ body.elderly #wx-hint .wx-sub{ font-size:17px; }
 body.elderly #wx-hint .wx-btn{ min-height:60px; font-size:19px; }
 
 </style>
-
+<style>
 /* ===== 电影质感升级 · 头像上传 ===== */
 #app{
   background:
@@ -764,6 +764,7 @@ body, .screen{ color:#fff; }
 .av-cell .av-reset{ font-size:11px; margin-top:4px; padding:3px 8px; border-radius:8px;
   background:rgba(255,120,120,.2); border:1px solid rgba(255,140,140,.4); color:#ffd0d0; cursor:pointer; }
 
+</style>
 </head>
 <body>
 <div id="app">
@@ -3315,7 +3316,13 @@ const Game = (() => {
 /* ===== 角色头像上传（开发者权限） ===== */
 window.__AV_PREFIX = 'hlmm_avatar_';
 (function(){ try{ for(const k in TILES){ if(TILES[k] && typeof TILES[k]==='object') TILES[k].key = k; } }catch(e){} })();
-window.avatarDataURL = function(key){ try{ return localStorage.getItem(window.__AV_PREFIX+key); }catch(e){ return null; } };
+window.__DEF_AVATARS = null;
+window.avatarDataURL = function(key){
+  var u = null;
+  try{ u = localStorage.getItem(window.__AV_PREFIX+key); }catch(e){}
+  if(!u && window.__DEF_AVATARS) u = window.__DEF_AVATARS[key] || null;
+  return u || null;
+};
 window.avatarHTML = function(t){
   var key = (t && t.key) || (window.__TKEY && window.__TKEY[t]);
   var url = key ? window.avatarDataURL(key) : null;
