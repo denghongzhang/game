@@ -732,21 +732,9 @@ body, .screen{ color:#fff; }
   text-shadow:0 1px 2px rgba(0,0,0,.4);
 }
 .btn.ghost{ background:rgba(255,255,255,.06); }
-/* 瓦片 3D 玻璃质感 + 外发光 */
-.tile{
-  border-radius:16px;
-  background:
-    radial-gradient(120% 120% at 30% 24%, rgba(255,255,255,.42), transparent 46%),
-    linear-gradient(160deg, var(--c,#888) 0%, rgba(0,0,0,.35) 130%);
-  box-shadow:0 7px 16px rgba(0,0,0,.5), inset 0 2px 5px rgba(255,255,255,.5), inset 0 -7px 12px rgba(0,0,0,.4);
-  border:1px solid rgba(255,255,255,.2);
-}
-.tile .emoji{ filter:drop-shadow(0 2px 5px rgba(0,0,0,.55)); }
-.tile.cat-main{
-  box-shadow:0 0 18px var(--g,#ffd700), 0 7px 16px rgba(0,0,0,.5), inset 0 2px 5px rgba(255,255,255,.55);
-}
 /* 上传头像：圆形 + 边缘高光 + 投影 */
-.up-avatar{ display:block; border-radius:50%; object-fit:cover; }
+/* 默认安全尺寸：防止目标图标等无容器约束处 img 撑爆布局（瓦片/形象卡等有专属规则覆盖） */
+.up-avatar{ display:block; width:1.15em; height:1.15em; border-radius:50%; object-fit:cover; vertical-align:-0.22em; }
 .tile .emoji img.up-avatar{ width:82%; height:82%; margin:auto;
   box-shadow:0 2px 7px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.4); }
 .hero-face img.up-avatar, .rk-face img.up-avatar, .fr-face img.up-avatar, #g-hero img.up-avatar{
