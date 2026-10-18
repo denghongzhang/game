@@ -735,16 +735,37 @@ body, .screen{ color:#fff; }
 /* 上传头像：圆形 + 边缘高光 + 投影 */
 /* 默认安全尺寸：防止目标图标等无容器约束处 img 撑爆布局（瓦片/形象卡等有专属规则覆盖） */
 .up-avatar{ display:block; width:1.15em; height:1.15em; border-radius:50%; object-fit:cover; vertical-align:-0.22em; }
-/* ===== 棋盘物件：更饱满 + 电影高光（叠加高光层，不暗化底色，保留原色） ===== */
+/* ===== 棋盘物件：SVG满幅高清 + 图标文字大而清晰 ===== */
 /* 注意：基线 .tile 为 position:absolute（JS 定位），此处绝不可改 position */
-.tile{ filter:saturate(1.12) contrast(1.05) brightness(1.03); }
+.tile{ filter:saturate(1.26) contrast(1.06) brightness(1.04); }
 .tile::after{ content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-  background:radial-gradient(120% 85% at 50% 8%, rgba(255,255,255,.34), transparent 56%);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.28), inset 0 -3px 7px rgba(0,0,0,.10); }
-.tile .emoji{ transform:scale(1.08); }
-.tile .emoji img.up-avatar{ width:90%; height:90%; }
-/* ===== 剧情框：按棋盘格数自适应（8x8 隐藏，7x7/6x6 放大） ===== */
-#screen-game.bs8 #plot-panel{ display:none !important; }
+  background:radial-gradient(120% 85% at 50% 8%, rgba(255,255,255,.30), transparent 56%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.25); }
+/* 图标满幅：SVG 自带金边+渐变底，铺满瓦片主体（宽度自适应格数 6/7/8） */
+.tile .emoji{ flex:1 1 auto; width:100%; min-height:0; margin-top:2px;
+  display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 2px 3px rgba(0,0,0,.35)); }
+.tile .emoji svg{ width:100% !important; height:100% !important;
+  filter:drop-shadow(0 0 1.6px rgba(40,20,60,.5)) drop-shadow(0 1.5px 2.5px rgba(255,255,255,.28)); }
+.tile .emoji img.up-avatar{ width:84%; height:84%; margin:auto; border-radius:16%;
+  box-shadow:0 2px 7px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.4); }
+/* 名称文字：加大加粗 + 白光描边，浅底深字更醒目；单行不折行防溢出 */
+.tile .tname{ flex:0 0 auto; font-size:10.5px !important; font-weight:900 !important; opacity:1 !important;
+  letter-spacing:0; margin:0 0 3px; white-space:nowrap; max-width:96%; overflow:hidden; text-overflow:ellipsis;
+  text-shadow:0 1px 0 rgba(255,255,255,.65), 0 0 5px rgba(255,255,255,.4); }
+body.elderly .tile .tname{ font-size:12px !important; }
+body.elderly-lg .tile .tname{ font-size:13px !important; }
+/* ===== 界面布局：棋盘放大填满、留白更少、细节更精致 ===== */
+#board-wrap{ max-width:480px !important; }
+body.elderly #board-wrap{ max-width:480px !important; }
+body.elderly-lg #board-wrap{ max-width:500px !important; }
+#g-goal-text{ font-size:15px !important; margin:6px 0 4px !important; letter-spacing:1px;
+  text-shadow:0 1px 3px rgba(0,0,0,.5); }
+.stat .pill{ box-shadow:0 2px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.14); }
+.hud .hero-badge{ box-shadow:0 0 12px rgba(255,215,0,.35); overflow:hidden; }
+.game-controls .btn{ border:1px solid rgba(255,205,110,.32) !important; }
+/* 手机浏览器地址栏/软键盘视口高度修正（支持 dvh 则用 100dvh，避免底部被裁） */
+@supports (height:100dvh){ .screen.active{ height:100dvh; } }
+/* ===== 剧情框：按棋盘格数自适应（8x8 无框直显，7x7/6x6 放大） ===== */
 #screen-game.bs7 #plot-panel{ max-height:170px; overflow-y:auto; }
 #screen-game.bs6 #plot-panel{ max-height:215px; overflow-y:auto; }
 #screen-game.bs6 #plot-summary, #screen-game.bs7 #plot-summary{ font-size:13px; line-height:1.75; }
@@ -757,11 +778,17 @@ body, .screen{ color:#fff; }
 .game-controls .btn{ min-width:0; padding:10px 2px !important; font-size:12.5px !important;
   border-radius:12px; min-height:46px; display:flex; align-items:center; justify-content:center;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.tile .emoji img.up-avatar{ width:82%; height:82%; margin:auto;
-  box-shadow:0 2px 7px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.4); }
 .hero-face img.up-avatar, .rk-face img.up-avatar, .fr-face img.up-avatar, #g-hero img.up-avatar{
   width:100%; height:100%; box-shadow:0 0 16px rgba(255,215,0,.6), inset 0 0 0 2px rgba(255,255,255,.25); }
 .hero-face, .rk-face, .fr-face, #g-hero{ overflow:hidden; }
+/* ===== 8x8：剧情无框直接显示（去面板底/边框，沉浸直出，填补充分利用纵向空间） ===== */
+#screen-game.bs8 #plot-panel{ background:transparent; border:none; box-shadow:none; backdrop-filter:none;
+  padding:2px 4px 4px; max-height:150px; overflow-y:auto; margin-bottom:6px; }
+#screen-game.bs8 #plot-panel .pp-head{ display:none; }
+#screen-game.bs8 #plot-panel #plot-scene, #screen-game.bs8 #plot-panel #plot-bgm,
+#screen-game.bs8 #plot-panel #plot-light{ display:none; }
+#screen-game.bs8 #plot-summary{ font-size:13px; line-height:1.7; color:#ffe9c0; }
+#screen-game.bs8 #plot-panel .meta{ margin-top:3px; font-size:11px; }
 /* 开发者头像上传面板 */
 .dev-avatars{ margin-top:14px; border-top:1px dashed rgba(255,255,255,.25); padding-top:12px; }
 .dev-avatars h4{ margin:0 0 6px; font-size:15px; color:#ffd9a0; }
@@ -3962,7 +3989,7 @@ try{
   var _bs = Math.round(Math.sqrt(document.querySelectorAll('#board .tile').length));
   var _sg = $('screen-game');
   if(_sg){ _sg.classList.remove('bs6','bs7','bs8'); _sg.classList.add('bs'+_bs); }
-  if(_bs>=8){ $('plot-panel').classList.add('hidden'); }
+  // 8x8 剧情无框直显（不再强制隐藏，由 CSS 控制形态）
   // 面板高度变化后让游戏重算棋盘尺寸
   setTimeout(function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }, 380);
   setTimeout(function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }, 900);
