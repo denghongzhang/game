@@ -761,6 +761,59 @@ body.elderly #wx-hint .wx-sub{ font-size:17px; }
 body.elderly #wx-hint .wx-btn{ min-height:60px; font-size:19px; }
 
 </style>
+
+/* ===== 电影质感升级 · 头像上传 ===== */
+#app{
+  background:
+    radial-gradient(130% 100% at 50% 50%, transparent 52%, rgba(0,0,0,.55) 100%),
+    radial-gradient(120% 80% at 50% -12%, rgba(255,205,130,.22), transparent 60%),
+    radial-gradient(110% 75% at 50% 112%, rgba(150,55,38,.42), transparent 60%),
+    linear-gradient(160deg, #2a0f0c 0%, #4a1812 46%, #190a07 100%);
+  background-size:100% 100%, 200% 200%, 200% 200%, 100% 100%;
+  animation: cineDrift 22s ease-in-out infinite;
+}
+@keyframes cineDrift{ 0%,100%{background-position:0 0,0% 0%,100% 100%,0 0} 50%{background-position:0 0,100% 55%,0% 50%,0 0} }
+body, .screen{ color:#fff; }
+.btn{
+  background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.04));
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.24);
+  box-shadow:0 4px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.32);
+  text-shadow:0 1px 2px rgba(0,0,0,.4);
+}
+.btn.ghost{ background:rgba(255,255,255,.06); }
+/* 瓦片 3D 玻璃质感 + 外发光 */
+.tile{
+  border-radius:16px;
+  background:
+    radial-gradient(120% 120% at 30% 24%, rgba(255,255,255,.42), transparent 46%),
+    linear-gradient(160deg, var(--c,#888) 0%, rgba(0,0,0,.35) 130%);
+  box-shadow:0 7px 16px rgba(0,0,0,.5), inset 0 2px 5px rgba(255,255,255,.5), inset 0 -7px 12px rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,.2);
+}
+.tile .emoji{ filter:drop-shadow(0 2px 5px rgba(0,0,0,.55)); }
+.tile.cat-main{
+  box-shadow:0 0 18px var(--g,#ffd700), 0 7px 16px rgba(0,0,0,.5), inset 0 2px 5px rgba(255,255,255,.55);
+}
+/* 上传头像：圆形 + 边缘高光 + 投影 */
+.up-avatar{ display:block; border-radius:50%; object-fit:cover; }
+.tile .emoji img.up-avatar{ width:82%; height:82%; margin:auto;
+  box-shadow:0 2px 7px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.4); }
+.hero-face img.up-avatar, .rk-face img.up-avatar, .fr-face img.up-avatar, #g-hero img.up-avatar{
+  width:100%; height:100%; box-shadow:0 0 16px rgba(255,215,0,.6), inset 0 0 0 2px rgba(255,255,255,.25); }
+.hero-face, .rk-face, .fr-face, #g-hero{ overflow:hidden; }
+/* 开发者头像上传面板 */
+.dev-avatars{ margin-top:14px; border-top:1px dashed rgba(255,255,255,.25); padding-top:12px; }
+.dev-avatars h4{ margin:0 0 6px; font-size:15px; color:#ffd9a0; }
+.avatar-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+.av-cell{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); border-radius:12px; padding:8px; text-align:center; }
+.av-cell .av-name{ font-size:13px; margin-bottom:5px; color:#ffe6c0; }
+.av-cell input[type=file]{ width:100%; font-size:11px; color:#ddd; }
+.av-cell .av-prev{ width:54px; height:54px; border-radius:50%; object-fit:cover; margin:6px auto 4px; display:none;
+  box-shadow:0 0 10px rgba(255,215,0,.5); border:1px solid rgba(255,255,255,.3); }
+.av-cell .av-reset{ font-size:11px; margin-top:4px; padding:3px 8px; border-radius:8px;
+  background:rgba(255,120,120,.2); border:1px solid rgba(255,140,140,.4); color:#ffd0d0; cursor:pointer; }
+
 </head>
 <body>
 <div id="app">
@@ -1119,6 +1172,16 @@ body.elderly #wx-hint .wx-btn{ min-height:60px; font-size:19px; }
     <p class="poster-tip">以下功能仅用于开发调试与体验。</p>
     <button class="btn" id="btn-dev-unlock" style="width:100%;margin-top:10px">🔓 全部解锁（体验）</button>
     <button class="btn ghost" id="btn-dev-reports" style="width:100%;margin-top:10px">📊 经营报表</button>
+    <div class="dev-avatars">
+      <h4>🎭 角色头像上传</h4>
+      <p class="poster-tip">上传图片将替换该角色在游戏各处的头像（形象卡 / 方块 / 排行榜 / 海报）。</p>
+      <div class="avatar-grid">
+        <div class="av-cell"><div class="av-name">唐僧</div><input type="file" id="av-file-tang" accept="image/*"><img class="av-prev" id="av-prev-tang" alt="唐僧"><button class="av-reset" id="av-reset-tang">恢复默认</button></div>
+        <div class="av-cell"><div class="av-name">孙悟空</div><input type="file" id="av-file-wukong" accept="image/*"><img class="av-prev" id="av-prev-wukong" alt="孙悟空"><button class="av-reset" id="av-reset-wukong">恢复默认</button></div>
+        <div class="av-cell"><div class="av-name">猪八戒</div><input type="file" id="av-file-bajie" accept="image/*"><img class="av-prev" id="av-prev-bajie" alt="猪八戒"><button class="av-reset" id="av-reset-bajie">恢复默认</button></div>
+        <div class="av-cell"><div class="av-name">沙僧</div><input type="file" id="av-file-shaseng" accept="image/*"><img class="av-prev" id="av-prev-shaseng" alt="沙僧"><button class="av-reset" id="av-reset-shaseng">恢复默认</button></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -3407,12 +3470,60 @@ const Game = (() => {
     cancelAnimationFrame(_fitRaf); _fitRaf = requestAnimationFrame(fitBoard);
   });
   window.addEventListener('orientationchange', function(){ setTimeout(fitBoard, 260); });
-  function paintTile(el, tile){
+  
+/* ===== 角色头像上传（开发者权限） ===== */
+window.__AV_PREFIX = 'xyxx_avatar_';
+(function(){ try{ for(const k in TILES){ if(TILES[k] && typeof TILES[k]==='object') TILES[k].key = k; } }catch(e){} })();
+window.avatarDataURL = function(key){ try{ return localStorage.getItem(window.__AV_PREFIX+key); }catch(e){ return null; } };
+window.avatarHTML = function(t){
+  var key = (t && t.key) || (window.__TKEY && window.__TKEY[t]);
+  var url = key ? window.avatarDataURL(key) : null;
+  if(url) return '<img class="up-avatar" src="'+url+'" alt="'+(t?t.name:'')+'">';
+  return (t && (t.svg || t.emoji)) || '';
+};
+window.avatarStore = function(key, dataURL){
+  try{ if(dataURL) localStorage.setItem(window.__AV_PREFIX+key, dataURL); else localStorage.removeItem(window.__AV_PREFIX+key); return true; }catch(e){ return false; }
+};
+window.avatarResize = function(file, cb){
+  var r = new FileReader();
+  r.onload = function(){ var img = new Image(); img.onload = function(){
+    var s=256, cv=document.createElement('canvas'); cv.width=s; cv.height=s;
+    var ctx=cv.getContext('2d'); ctx.clearRect(0,0,s,s);
+    var sc=Math.min(s/img.width, s/img.height); var w=img.width*sc, h=img.height*sc;
+    ctx.drawImage(img,(s-w)/2,(s-h)/2,w,h);
+    cb(cv.toDataURL('image/jpeg',0.85)); }; img.src=r.result; };
+  r.readAsDataURL(file);
+};
+window.DEV_AVATAR_KEYS = [["tang","唐僧"],["wukong","孙悟空"],["bajie","猪八戒"],["shaseng","沙僧"]];
+window.renderAvatarPreview = function(key){
+  var prev = document.getElementById('av-prev-'+key);
+  var url = window.avatarDataURL(key);
+  if(prev){ if(url){ prev.src=url; prev.style.display='block'; } else { prev.style.display='none'; } }
+};
+window.bindAvatarUploads = function(){
+  window.DEV_AVATAR_KEYS.forEach(function(pair){
+    var key = pair[0];
+    var inp = document.getElementById('av-file-'+key);
+    var reset = document.getElementById('av-reset-'+key);
+    if(inp) inp.onchange = function(){
+      var f = inp.files && inp.files[0]; if(!f) return;
+      window.avatarResize(f, function(d){ window.avatarStore(key,d); window.renderAvatarPreview(key);
+        try{ if(window.renderSelect) window.renderSelect(); }catch(e){}
+        if(window.toast) window.toast('已更新【'+pair[1]+'】头像'); });
+    };
+    if(reset) reset.onclick = function(){ window.avatarStore(key,null); window.renderAvatarPreview(key);
+      try{ if(window.renderSelect) window.renderSelect(); }catch(e){} if(window.toast) window.toast('已恢复【'+pair[1]+'】默认头像'); };
+    window.renderAvatarPreview(key);
+  });
+};
+/* 头像绑定：脚本位于 body 末尾，DOM 已就绪 */
+try{ window.bindAvatarUploads(); }catch(e){}
+function paintTile(el, tile){
     const t = TILES[tile.key];
     el.className = 'tile cat-'+t.cat;            // 注意：会清掉 sel/hint/pop，调用方在 render 后再补 goal
     el.style.setProperty('--c', t.color);
     el.style.setProperty('--g', t.glow);
-    el.innerHTML = `<span class="emoji">${t.svg || t.emoji}</span><span class="tname">${t.name}</span>`;
+    el.innerHTML = `<span class="emoji">${window.avatarHTML(t)}</span><span class="tname">${t.name}</span>`;
     el.dataset.key = tile.key;
   }
   function tileEl(tile, r, c, fromAbove){
@@ -3613,7 +3724,7 @@ const Game = (() => {
           el.className = 'tile cat-'+t.cat;
           el.style.setProperty('--c', t.color);
           el.style.setProperty('--g', t.glow);
-          el.innerHTML = `<span class="emoji">${t.svg || t.emoji}</span><span class="tname">${t.name}</span>`;
+          el.innerHTML = `<span class="emoji">${window.avatarHTML(t)}</span><span class="tname">${t.name}</span>`;
         }
       } else {
         tile.key = oldKey;
@@ -3679,7 +3790,7 @@ const Game = (() => {
     $('g-moves').textContent = moves;
     const tot = $('g-total'); if(tot) tot.textContent = (+(localStorage.getItem('xyxx_play_total')||'0')); // ⑥ 累计积分
     const hero=TILES[heroKey];
-    $('g-hero').innerHTML = hero.svg || hero.emoji;
+    $('g-hero').innerHTML = window.avatarHTML(hero);
     if(eff.type==='score'){
       $('g-goal-text').textContent = `目标积分 ${score} / ${eff.target}`;
       $('g-goal-bar').style.width = Math.min(100, score/eff.target*100)+'%';
@@ -6572,6 +6683,13 @@ const Share = (() => {
       }
       // 角色之后：口号 / 邀请码 / 二维码 / 署名 → 收尾导出
       function finish(){
+        // 电影暗角
+        try{ const vg=ctx.createRadialGradient(W/2,H/2,H*0.25,W/2,H/2,H*0.72);
+          vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,.55)');
+          ctx.fillStyle=vg; ctx.fillRect(0,0,W,H); }catch(e){}
+        // 胶片颗粒
+        try{ ctx.save(); for(let i=0;i<2600;i++){ const x=Math.random()*W, y=Math.random()*H;
+          ctx.fillStyle='rgba(255,255,255,'+(Math.random()*0.05)+')'; ctx.fillRect(x,y,1.4,1.4); } ctx.restore(); }catch(e){}
         ctx.fillStyle='#ffffff'; ctx.font='34px serif';
         ctx.fillText('扫码一起取经 · 免费领体力', W/2, 660);
         ctx.fillStyle='#ffd700'; ctx.font='bold 40px monospace';
@@ -6586,18 +6704,31 @@ const Share = (() => {
         resolve(url);
       }
 
-      // 角色大图：优先国风 SVG 矢量图标（替换 emoji，去除系统字体依赖）
+      // 角色大图：优先【已上传头像】→ 国风 SVG 矢量图标 → emoji 兜底
       const size = 320;
-      let svg = (window.ART && heroKey) ? window.ART(heroKey) : '';
-      if(svg){
-        svg = svg.replace('width="100%" height="100%"', `width="${size}" height="${size}"`);
-        svg = '<?xml version="1.0" encoding="UTF-8"?>\n' + svg;
+      // 角色背后电影光晕
+      try{ const rg=ctx.createRadialGradient(W/2,470,20,W/2,470,size*0.95);
+        rg.addColorStop(0,'rgba(255,225,150,.30)'); rg.addColorStop(1,'rgba(255,225,150,0)');
+        ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(W/2,470,size*0.95,0,Math.PI*2); ctx.fill(); }catch(e){}
+      const upImg = window.avatarDataURL(heroKey);
+      if(upImg){
         const img = new Image();
-        img.onload = () => { try{ ctx.drawImage(img, W/2 - size/2, 470 - size/2, size, size); }catch(e){} finish(); };
+        img.onload = () => { try{ ctx.save(); ctx.beginPath(); ctx.arc(W/2,470,size/2,0,Math.PI*2); ctx.closePath(); ctx.clip();
+          ctx.drawImage(img, W/2-size/2, 470-size/2, size, size); ctx.restore();
+          ctx.save(); ctx.strokeStyle='rgba(255,220,140,.95)'; ctx.lineWidth=6; ctx.beginPath(); ctx.arc(W/2,470,size/2-3,0,Math.PI*2); ctx.stroke(); ctx.restore();
+        }catch(e){} finish(); };
         img.onerror = () => { drawEmoji(); finish(); };
-        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        img.src = upImg;
       } else {
-        drawEmoji(); finish();
+        let svg = (window.ART && heroKey) ? window.ART(heroKey) : '';
+        if(svg){
+          svg = svg.replace('width="100%" height="100%"', `width="${size}" height="${size}"`);
+          svg = '<?xml version="1.0" encoding="UTF-8"?>\n' + svg;
+          const img = new Image();
+          img.onload = () => { try{ ctx.drawImage(img, W/2 - size/2, 470 - size/2, size, size); }catch(e){} finish(); };
+          img.onerror = () => { drawEmoji(); finish(); };
+          img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        } else { drawEmoji(); finish(); }
       }
     });
   }
@@ -7284,12 +7415,15 @@ const App = (() => {
   }
 
   /* -------- 形象 + 关卡选择 -------- */
-  function renderSelect(){
+  
+/* ===== 头像 key 反查表（App 作用域内 TILES 可见） ===== */
+try{ if(!window.__TKEY) window.__TKEY = {}; for(var _k in TILES){ if(TILES[_k] && typeof TILES[_k]==='object'){ TILES[_k].key=_k; window.__TKEY[TILES[_k]]=_k; } } }catch(e){}
+function renderSelect(){
     const wrap=$('hero-cards');
     wrap.innerHTML = HEROES.map(h=>{
       const t=TILES[h.key];
       return `<div class="hero-card ${h.key===hero?'on':''}" data-hero="${h.key}">
-        <div class="hero-face" style="--c:${t.color};--g:${t.glow}">${t.svg || t.emoji}</div>
+        <div class="hero-face" style="--c:${t.color};--g:${t.glow}">${window.avatarHTML(t)}</div>
         <div class="hero-name">${t.name}</div>
         <div class="hero-title">${h.title}</div>
         <div class="hero-desc">${h.desc}</div>
@@ -7305,7 +7439,7 @@ const App = (() => {
         <div class="lv-no">第${l.id}难</div>
         <div class="lv-name">${l.name}</div>
         <div class="lv-ch">${l.chapter.replace('原著·','')}</div>
-        <div class="lv-goal">${l.goal.type==='score'?'目标 '+l.goal.target+' 分':'收集 '+(TILES[l.goal.collect].svg||TILES[l.goal.collect].emoji)}</div>
+        <div class="lv-goal">${l.goal.type==='score'?'目标 '+l.goal.target+' 分':'收集 '+window.avatarHTML(TILES[l.goal.collect])}</div>
         <div class="lv-stars">
           <span class="st-easy" title="轻松难度星级">🌿 ${starStr(getStars(i,'easy'))}</span>
           <span class="st-hard" title="挑战难度星级">🔥 ${starStr(getStars(i,'hard'))}</span>
@@ -7322,7 +7456,7 @@ const App = (() => {
       }
       AudioEngine.ensure(); showDiff(i);
     });
-    $('select-hero-label').innerHTML = '当前形象：'+(TILES[hero].svg||TILES[hero].emoji)+TILES[hero].name;
+    $('select-hero-label').innerHTML = '当前形象：'+window.avatarHTML(TILES[hero])+TILES[hero].name;
     // 解锁面板：第6难起需付费/积分解锁
     const up=$('unlock-panel');
     if(up){
@@ -7540,7 +7674,7 @@ const App = (() => {
       const bestStr = best>0 ? `最佳 ${fmt(best)}${bestLv>0?` · 第${bestLv}难`:''}` : '';
       return `<div class="rank-row ${p.isYou?'me':''}">
         <span class="rk">${i<3?['🥇','🥈','🥉'][i]:('#'+(i+1))}</span>
-        <span class="rk-face">${t.svg || t.emoji}</span>
+        <span class="rk-face">${window.avatarHTML(t)}</span>
         <span class="rk-name">${p.name}${bestStr?`<i class="rk-best">${bestStr}</i>`:''}</span>
         <span class="rk-score" title="累计积分（排名依据）">🪙${fmt(p.score)}</span>
       </div>`;
@@ -7636,7 +7770,7 @@ const App = (() => {
     $('coop-friends').innerHTML = friends.map((f,i)=>{
       const t=TILES[lv[i%lv.length]];
       return `<div class="friend-row">
-        <span class="fr-face">${t.svg || t.emoji}</span>
+        <span class="fr-face">${window.avatarHTML(t)}</span>
         <span class="fr-name">${f}</span>
         <button class="fr-help" data-i="${i}">助力 +1体力</button>
       </div>`;
