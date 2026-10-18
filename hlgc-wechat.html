@@ -754,17 +754,19 @@ body, .screen{ color:#fff; }
   text-shadow:0 1px 0 rgba(255,255,255,.65), 0 0 5px rgba(255,255,255,.4); }
 body.elderly .tile .tname{ font-size:12px !important; }
 body.elderly-lg .tile .tname{ font-size:13px !important; }
-/* ===== 界面布局：棋盘放大填满、留白更少、细节更精致 ===== */
-#board-wrap{ max-width:480px !important; }
-body.elderly #board-wrap{ max-width:480px !important; }
-body.elderly-lg #board-wrap{ max-width:500px !important; }
+/* ===== 界面布局：细节精致（棋盘宽度沿用基线，避免与 sizeBoard 高度收敛竞态） ===== */
 #g-goal-text{ font-size:15px !important; margin:6px 0 4px !important; letter-spacing:1px;
   text-shadow:0 1px 3px rgba(0,0,0,.5); }
 .stat .pill{ box-shadow:0 2px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.14); }
 .hud .hero-badge{ box-shadow:0 0 12px rgba(255,215,0,.35); overflow:hidden; }
 .game-controls .btn{ border:1px solid rgba(255,205,110,.32) !important; }
-/* 手机浏览器地址栏/软键盘视口高度修正（支持 dvh 则用 100dvh，避免底部被裁） */
-@supports (height:100dvh){ .screen.active{ height:100dvh; } }
+/* ===== 微信 XWeb / 安卓 WebView 兼容防御 ===== */
+/* 1) 禁止浏览器自动放大文字（系统字体缩放会把瓦片名称撑出棋盘） */
+html{ -webkit-text-size-adjust:100% !important; text-size-adjust:100% !important; }
+/* 2) 防 X5/老内核 Font Boosting（对无固定高度元素放大文字） */
+body *{ max-height:999999px; }
+/* 3) 瓦片内容防溢出（固定尺寸内文字/图标一律裁剪在瓦片内） */
+.tile{ overflow:hidden; }
 /* ===== 剧情框：按棋盘格数自适应（8x8 无框直显，7x7/6x6 放大） ===== */
 #screen-game.bs7 #plot-panel{ max-height:170px; overflow-y:auto; }
 #screen-game.bs6 #plot-panel{ max-height:215px; overflow-y:auto; }
@@ -3411,6 +3413,24 @@ window.bindAvatarUploads = function(){
 };
 /* 头像绑定：脚本位于 body 末尾，DOM 已就绪 */
 try{ window.bindAvatarUploads(); }catch(e){}
+/* ===== 棋盘布局自愈（微信XWeb兼容）：容器尺寸一变就触发基线 fitBoard 重算 =====
+   根因：进入对局瞬间 sizeBoard 按当时容器算出 cell；随后布局再变（dvh/视口抖动、
+   控件网格换行等 CSS 引起的变化不触发 window.resize），cell 与瓦片尺寸失配 → 瓦片重叠错位。 */
+try{
+  var __heal = function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} };
+  var __ht = 0;
+  if(typeof ResizeObserver !== 'undefined'){
+    var __ro = new ResizeObserver(function(){ clearTimeout(__ht); __ht = setTimeout(__heal, 90); });
+    ['screen-game','board-wrap'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) __ro.observe(el);
+    });
+  }
+  ['pointerup','touchend'].forEach(function(ev){
+    window.addEventListener(ev, function(){ setTimeout(__heal, 400); }, {passive:true});
+  });
+  setTimeout(__heal, 500); setTimeout(__heal, 1400);
+}catch(e){}
 function paintTile(el, tile){
     const t = TILES[tile.key];
     el.className = 'tile cat-'+t.cat;
