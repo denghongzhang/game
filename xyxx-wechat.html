@@ -855,6 +855,28 @@ html{ -webkit-text-size-adjust:100% !important; text-size-adjust:100% !important
 body *{ max-height:999999px; }
 /* 3) 瓦片内容防溢出（固定尺寸内文字/图标一律裁剪在瓦片内） */
 .tile{ overflow:hidden; }
+/* ===== 视口精确化：dvh 动态视口 + 安全区（微信标题栏/状态栏/Home条不再裁内容） ===== */
+@supports (height:100dvh){
+  .screen{ min-height:100dvh !important; }
+  .screen.active{ height:100dvh !important; }
+}
+.screen{ padding-top:max(10px, env(safe-area-inset-top)) !important;
+  padding-bottom:max(8px, env(safe-area-inset-bottom)) !important; }
+.top-toggles{ top:max(6px, env(safe-area-inset-top)) !important; right:8px !important; }
+/* ===== 首页一屏完整显示：标题不折行、元素紧凑化、不留页脚裁切 ===== */
+#screen-title{ padding-top:max(8px, env(safe-area-inset-top)) !important;
+  padding-bottom:max(6px, env(safe-area-inset-bottom)) !important; }
+#screen-title .logo{ margin-top:46px !important; }   /* 避开右上角图标行 */
+#screen-title .logo .big{ font-size:clamp(28px, 10.5vw, 42px) !important; letter-spacing:2px !important;
+  white-space:nowrap !important; line-height:1.15 !important; }
+#screen-title .logo .sub{ font-size:12px !important; letter-spacing:4px !important; margin-top:2px !important; }
+#screen-title .title-art{ font-size:48px !important; margin:8px 0 !important; }
+#screen-title .title-art .ta-av{ width:52px !important; height:52px !important; }
+@media (max-width:380px){ #screen-title .title-art .ta-av{ width:46px !important; height:46px !important; } }
+#screen-title .title-tag{ font-size:11.5px !important; padding:4px 12px !important; margin:2px 0 10px !important; }
+#screen-title .title-menu{ gap:7px !important; max-width:280px !important; }
+#screen-title .title-menu .btn{ padding:9px 12px !important; font-size:15px !important; min-height:0 !important; }
+#screen-title .copyright{ margin-top:6px !important; padding:3px 10px !important; font-size:10px !important; }
 /* ===== 剧情框：按棋盘格数自适应（8x8 无框直显；高度回填棋盘上方空间，减少留黑） ===== */
 #screen-game.bs7 #plot-panel{ max-height:130px; overflow-y:auto; }
 #screen-game.bs6 #plot-panel{ max-height:118px; overflow-y:auto; }
@@ -3632,6 +3654,19 @@ try{
     window.addEventListener(ev, function(){ setTimeout(__heal, 400); }, {passive:true});
   });
   setTimeout(__heal, 500); setTimeout(__heal, 1400);
+}catch(e){}
+/* ===== 切屏滚动归零：进入对局/返回首页时清除 body 与容器滚动残留（顶部内容不再被顶出视口） ===== */
+try{
+  document.querySelectorAll('.screen').forEach(function(s){
+    new MutationObserver(function(){
+      if(s.classList.contains('active')){
+        try{ window.scrollTo(0,0); }catch(e){}
+        try{ document.documentElement.scrollTop=0; document.body.scrollTop=0; }catch(e){}
+        try{ s.scrollTop=0; }catch(e){}
+        setTimeout(function(){ try{ s.scrollTop=0; window.scrollTo(0,0); }catch(e){} }, 60);
+      }
+    }).observe(s, {attributes:true, attributeFilter:['class']});
+  });
 }catch(e){}
 function paintTile(el, tile){
     const t = TILES[tile.key];
