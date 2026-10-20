@@ -739,9 +739,9 @@ body, .screen{ color:#fff; }
 /* 注意：基线 .tile 为 position:absolute（JS 定位），此处绝不可改 position */
 /* 鎏金描边（outline 不占布局，且不被 cat-* 的 box-shadow 覆盖）+ 外发光叠层 */
 .tile{ outline:1.6px solid rgba(255,224,150,.62); outline-offset:-2px;
-  filter:saturate(1.42) contrast(1.1) brightness(1.09);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.4), inset 0 -8px 15px rgba(0,0,0,.28),
-    0 7px 18px rgba(0,0,0,.5), 0 0 19px color-mix(in srgb, var(--g) 60%, transparent) !important; }
+  filter:saturate(1.5) contrast(1.1) brightness(1.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45), inset 0 -8px 15px rgba(0,0,0,.26),
+    0 7px 18px rgba(0,0,0,.5), 0 0 20px color-mix(in srgb, var(--g) 62%, transparent) !important; }
 /* 高明亮金玉渐变底（珠光高光更强、沉底减暗，整体明快通透）—— 覆盖基线平铺底 */
 .tile{ background:
     radial-gradient(130% 70% at 50% 6%, rgba(255,255,255,.62), transparent 50%),
@@ -749,47 +749,54 @@ body, .screen{ color:#fff; }
 /* 顶部柔光高光层（不写 position，避免破坏基线 absolute 定位） */
 .tile::after{ content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
   background:radial-gradient(130% 66% at 50% 0%, rgba(255,255,255,.36), transparent 44%); }
-/* 名称：底部磨砂金条（全宽纤薄，四字名完整显示），字号随格宽自适应 */
+/* 名称：底部磨砂金条（全宽纤薄，四字名完整显示），字号随格宽自适应，尽量薄给图标让空间 */
 .tile .tname{ flex:0 0 auto; align-self:stretch; text-align:center;
-  font-size:clamp(9.5px, calc(var(--cell, 46px) * 0.19), 15px) !important; font-weight:800; letter-spacing:0;
-  margin:0 1px 2px; padding:0; max-width:none;
+  font-size:clamp(9px, calc(var(--cell, 46px) * 0.18), 14px) !important; font-weight:800; letter-spacing:0;
+  margin:0 1px 1px; padding:0; max-width:none; line-height:1.3;
   color:#fff3d6; background:linear-gradient(rgba(18,8,12,.52), rgba(18,8,12,.7));
   border:1px solid rgba(255,214,128,.5); border-radius:5px;
   text-shadow:0 1px 2px rgba(0,0,0,.75); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .tile .emoji{ flex:1 1 auto; min-height:0; margin:0;
   display:flex; align-items:center; justify-content:center; line-height:1;
-  font-size:calc(var(--cell, 46px) * 0.68);
-  filter:drop-shadow(0 3px 4px rgba(60,30,10,.5)) drop-shadow(0 -1px 2px rgba(255,255,255,.75)); }
-.tile .emoji img.up-avatar{ width:78%; height:78%; margin:auto; border-radius:16%;
+  font-size:calc(var(--cell, 46px) * 0.73);
+  filter:drop-shadow(0 3px 5px rgba(60,30,10,.55)) drop-shadow(0 -1px 2px rgba(255,255,255,.8)); }
+.tile .emoji img.up-avatar{ width:80%; height:80%; margin:auto; border-radius:16%;
   box-shadow:0 3px 9px rgba(0,0,0,.6), inset 0 0 0 2px rgba(255,255,255,.4); }
-body.elderly .tile .emoji{ font-size:calc(var(--cell, 58px) * 0.71); }
-body.elderly-lg .tile .emoji{ font-size:calc(var(--cell, 62px) * 0.72); }
-body.elderly .tile .tname{ font-size:clamp(10px, calc(var(--cell, 58px) * 0.205), 17px) !important; }
-body.elderly-lg .tile .tname{ font-size:clamp(10px, calc(var(--cell, 62px) * 0.21), 18px) !important; }
+body.elderly .tile .emoji{ font-size:calc(var(--cell, 58px) * 0.75); }
+body.elderly-lg .tile .emoji{ font-size:calc(var(--cell, 62px) * 0.76); }
+body.elderly .tile .tname{ font-size:clamp(10px, calc(var(--cell, 58px) * 0.19), 16px) !important; }
+body.elderly-lg .tile .tname{ font-size:clamp(10px, calc(var(--cell, 62px) * 0.195), 17px) !important; }
 #board{ --cell:46px; }
 /* ===== 界面布局：细节精致（棋盘宽度沿用基线，避免与 sizeBoard 高度收敛竞态） ===== */
 #g-goal-text{ font-size:15px !important; margin:6px 0 4px !important; letter-spacing:1px;
   text-shadow:0 1px 3px rgba(0,0,0,.5); }
-/* ===== 顶部HUD紧凑化：单行排布、不再竖排换行、面积占用大减 ===== */
-.hud{ gap:6px !important; margin-bottom:4px !important; align-items:center !important; }
-.hud .lv-info{ flex:1 1 auto; min-width:0; }
-.hud .lv-name{ white-space:nowrap !important; overflow:hidden; text-overflow:ellipsis;
-  font-size:13.5px !important; margin:0 !important; line-height:1.3 !important; }
-.hud .lv-ch{ white-space:nowrap; font-size:9px !important; line-height:1.3 !important; }
-.hud .hero-badge{ width:30px !important; height:30px !important; font-size:17px !important; flex:0 0 auto;
+/* ===== 顶部HUD紧凑化：单行排布、sticky常驻不被顶栏遮挡、窄屏不横向溢出 ===== */
+.hud{ gap:4px !important; margin:0 0 4px !important; align-items:center !important;
+  flex-wrap:nowrap !important; overflow:hidden; max-width:100%;
+  position:sticky; top:0; z-index:30;
+  background:linear-gradient(180deg, rgba(22,11,7,.94), rgba(22,11,7,.80));
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  padding:5px 4px; border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,.4); }
+.hud .lv-info{ flex:1 1 0 !important; min-width:0 !important; overflow:hidden; }
+.hud .lv-name{ white-space:nowrap !important; overflow:hidden; text-overflow:ellipsis; max-width:100%;
+  font-size:12.5px !important; margin:0 !important; line-height:1.3 !important; }
+.hud .lv-ch{ white-space:nowrap; font-size:8.5px !important; line-height:1.3 !important; }
+.hud .hero-badge{ width:28px !important; height:28px !important; font-size:16px !important; flex:0 0 auto;
   box-shadow:0 0 12px rgba(255,215,0,.35); overflow:hidden; }
-.stat{ gap:5px !important; flex:0 0 auto; }
-.stat .pill{ padding:2px 8px !important; border-radius:10px !important;
+.stat{ gap:4px !important; flex:0 0 auto; }
+.stat .pill{ padding:2px 6px !important; border-radius:9px !important;
   box-shadow:0 2px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.14); }
-.stat .pill b{ font-size:15px !important; line-height:1.25 !important; }
-.stat .pill span{ font-size:9px !important; }
-.stat .icon-btn{ width:30px !important; height:30px !important; font-size:14px !important; flex:0 0 auto; }
+.stat .pill b{ font-size:14px !important; line-height:1.25 !important; }
+.stat .pill span{ font-size:8.5px !important; }
+.stat .icon-btn{ width:28px !important; height:28px !important; font-size:13px !important; flex:0 0 auto; }
 /* ===== 棋盘最大化：放开基线 360px 宽度上限（高度仍由 sizeBoard min(w,h) 收敛，自愈机制保对齐） ===== */
 #board-wrap{ max-width:none !important; width:100% !important; }
-#screen-game{ padding-left:5px !important; padding-right:5px !important; }
+#screen-game{ padding-left:2px !important; padding-right:2px !important; }
 #g-goal-text{ font-size:13.5px !important; margin:4px 0 3px !important; letter-spacing:1px;
   text-shadow:0 1px 3px rgba(0,0,0,.5); }
-#boost-info{ margin-top:3px !important; font-size:11px !important; }
+#boost-info{ margin-top:0 !important; font-size:11px !important; padding:1px 0 !important; }
+.game-controls{ margin-top:4px !important; }
 .game-controls .btn{ border:1px solid rgba(255,205,110,.32) !important; }
 /* ===== 微信 XWeb / 安卓 WebView 兼容防御 ===== */
 /* 1) 禁止浏览器自动放大文字（系统字体缩放会把瓦片名称撑出棋盘） */
@@ -798,16 +805,16 @@ html{ -webkit-text-size-adjust:100% !important; text-size-adjust:100% !important
 body *{ max-height:999999px; }
 /* 3) 瓦片内容防溢出（固定尺寸内文字/图标一律裁剪在瓦片内） */
 .tile{ overflow:hidden; }
-/* ===== 剧情框：按棋盘格数自适应（8x8 无框直显，7x7/6x6 紧凑可滚——高度让给棋盘） ===== */
-#screen-game.bs7 #plot-panel{ max-height:112px; overflow-y:auto; }
-#screen-game.bs6 #plot-panel{ max-height:132px; overflow-y:auto; }
+/* ===== 剧情框：按棋盘格数自适应（8x8 无框直显；高度回填棋盘上方空间，减少留黑） ===== */
+#screen-game.bs7 #plot-panel{ max-height:130px; overflow-y:auto; }
+#screen-game.bs6 #plot-panel{ max-height:118px; overflow-y:auto; }
 #screen-game.bs6 #plot-summary, #screen-game.bs7 #plot-summary{ font-size:13px; line-height:1.75; }
 #screen-game.bs6 #plot-panel .pp-head, #screen-game.bs7 #plot-panel .pp-head{ font-size:12.5px; }
 #screen-game.bs6 #plot-chars, #screen-game.bs6 #plot-objects,
 #screen-game.bs7 #plot-chars, #screen-game.bs7 #plot-objects{ gap:7px; }
 /* ===== 底部按键：4列整齐网格（等高、等宽、单行不折） ===== */
 .game-controls{ display:grid !important; grid-template-columns:repeat(4,1fr) !important;
-  gap:6px !important; margin-top:6px !important; }
+  gap:6px !important; margin-top:4px !important; }
 .game-controls .btn{ min-width:0; padding:7px 2px !important; font-size:12px !important;
   border-radius:11px; min-height:38px; display:flex; align-items:center; justify-content:center;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -816,7 +823,7 @@ body *{ max-height:999999px; }
 .hero-face, .rk-face, .fr-face, #g-hero{ overflow:hidden; }
 /* ===== 8x8：剧情无框直接显示（去面板底/边框，沉浸直出，填补充分利用纵向空间） ===== */
 #screen-game.bs8 #plot-panel{ background:transparent; border:none; box-shadow:none; backdrop-filter:none;
-  padding:2px 4px 2px; max-height:104px; overflow-y:auto; margin-bottom:4px; }
+  padding:2px 4px 2px; max-height:160px; overflow-y:auto; margin-bottom:4px; }
 #screen-game.bs8 #plot-panel .pp-head{ display:none; }
 #screen-game.bs8 #plot-panel #plot-scene, #screen-game.bs8 #plot-panel #plot-bgm,
 #screen-game.bs8 #plot-panel #plot-light{ display:none; }
