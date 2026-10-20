@@ -788,42 +788,42 @@ body, .screen{ color:#fff; }
 /* ===== 棋盘物件：墨玉鎏金·电影质感（高端大气） ===== */
 /* 注意：基线 .tile 为 position:absolute（JS 定位），此处绝不可改 position */
 /* 鎏金描边（outline 不占布局，且不被 cat-* 的 box-shadow 覆盖）+ 外发光叠层 */
-.tile{ outline:1.6px solid rgba(255,224,150,.62); outline-offset:-2px;
-  filter:saturate(1.5) contrast(1.1) brightness(1.12);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.45), inset 0 -8px 15px rgba(0,0,0,.26),
-    0 7px 18px rgba(0,0,0,.5), 0 0 20px color-mix(in srgb, var(--g) 62%, transparent) !important; }
-/* 高明亮金玉渐变底（珠光高光更强、沉底减暗，整体明快通透）—— 覆盖基线平铺底 */
+.tile{ outline:1.5px solid rgba(255,228,160,.5); outline-offset:-2px;
+  filter:saturate(1.26) contrast(1.04) brightness(1.06);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4), inset 0 -6px 12px rgba(0,0,0,.16),
+    0 6px 14px rgba(0,0,0,.4), 0 0 13px color-mix(in srgb, var(--g) 38%, transparent) !important; }
+/* 高明亮金玉渐变底（柔光更绵、明快通透不刺眼）—— 覆盖基线平铺底 */
 .tile{ background:
-    radial-gradient(130% 70% at 50% 6%, rgba(255,255,255,.62), transparent 50%),
-    linear-gradient(168deg, color-mix(in srgb, var(--c) 54%, #fff) 0%, var(--c) 44%, color-mix(in srgb, var(--c) 60%, #140806) 100%) !important; }
+    radial-gradient(130% 70% at 50% 6%, rgba(255,255,255,.52), transparent 52%),
+    linear-gradient(168deg, color-mix(in srgb, var(--c) 48%, #fff) 0%, var(--c) 46%, color-mix(in srgb, var(--c) 64%, #1a0c08) 100%) !important; }
 /* 顶部柔光高光层（不写 position，避免破坏基线 absolute 定位） */
 .tile::after{ content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-  background:radial-gradient(130% 66% at 50% 0%, rgba(255,255,255,.36), transparent 44%); }
+  background:radial-gradient(130% 66% at 50% 0%, rgba(255,255,255,.3), transparent 46%); }
 /* 名称：底部磨砂金条（全宽纤薄，四字名完整显示），字号随格宽自适应，尽量薄给图标让空间 */
 .tile .tname{ flex:0 0 auto; align-self:stretch; text-align:center;
   font-size:clamp(9px, calc(var(--cell, 46px) * 0.18), 14px) !important; font-weight:800; letter-spacing:0;
   margin:0 1px 1px; padding:0; max-width:none; line-height:1.3;
-  color:#fff3d6; background:linear-gradient(rgba(18,8,12,.52), rgba(18,8,12,.7));
-  border:1px solid rgba(255,214,128,.5); border-radius:5px;
-  text-shadow:0 1px 2px rgba(0,0,0,.75); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  color:#fff3d6; background:linear-gradient(rgba(18,8,12,.5), rgba(18,8,12,.66));
+  border:1px solid rgba(255,214,128,.45); border-radius:5px;
+  text-shadow:0 1px 2px rgba(0,0,0,.7); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .tile .emoji{ flex:1 1 auto; min-height:0; margin:0;
   display:flex; align-items:center; justify-content:center; line-height:1;
-  font-size:calc(var(--cell, 46px) * 0.73);
-  filter:drop-shadow(0 3px 5px rgba(60,30,10,.55)) drop-shadow(0 -1px 2px rgba(255,255,255,.8)); }
-.tile .emoji img.up-avatar{ width:80%; height:80%; margin:auto; border-radius:16%;
-  box-shadow:0 3px 9px rgba(0,0,0,.6), inset 0 0 0 2px rgba(255,255,255,.4); }
-body.elderly .tile .emoji{ font-size:calc(var(--cell, 58px) * 0.75); }
-body.elderly-lg .tile .emoji{ font-size:calc(var(--cell, 62px) * 0.76); }
+  font-size:calc(var(--cell, 46px) * 0.82);
+  filter:drop-shadow(0 3px 4px rgba(60,30,10,.45)) drop-shadow(0 -1px 2px rgba(255,255,255,.7)); }
+.tile .emoji img.up-avatar{ width:84%; height:84%; margin:auto; border-radius:16%;
+  box-shadow:0 3px 9px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.4); }
+body.elderly .tile .emoji{ font-size:calc(var(--cell, 58px) * 0.84); }
+body.elderly-lg .tile .emoji{ font-size:calc(var(--cell, 62px) * 0.85); }
 body.elderly .tile .tname{ font-size:clamp(10px, calc(var(--cell, 58px) * 0.19), 16px) !important; }
 body.elderly-lg .tile .tname{ font-size:clamp(10px, calc(var(--cell, 62px) * 0.195), 17px) !important; }
 #board{ --cell:46px; }
 /* ===== 界面布局：细节精致（棋盘宽度沿用基线，避免与 sizeBoard 高度收敛竞态） ===== */
 #g-goal-text{ font-size:15px !important; margin:6px 0 4px !important; letter-spacing:1px;
   text-shadow:0 1px 3px rgba(0,0,0,.5); }
-/* ===== 顶部HUD紧凑化：单行排布、sticky常驻不被顶栏遮挡、窄屏不横向溢出 ===== */
+/* ===== 顶部HUD紧凑化：单行排布、固定在流顶端（flex常驻，永不被裁切）、窄屏不横向溢出 ===== */
 .hud{ gap:4px !important; margin:0 0 4px !important; align-items:center !important;
   flex-wrap:nowrap !important; overflow:hidden; max-width:100%;
-  position:sticky; top:0; z-index:30;
+  position:static !important; flex:0 0 auto !important;
   background:linear-gradient(180deg, rgba(22,11,7,.94), rgba(22,11,7,.80));
   backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
   padding:5px 4px; border-radius:12px;
@@ -843,6 +843,15 @@ body.elderly-lg .tile .tname{ font-size:clamp(10px, calc(var(--cell, 62px) * 0.1
 /* ===== 棋盘最大化：放开基线 360px 宽度上限（高度仍由 sizeBoard min(w,h) 收敛，自愈机制保对齐） ===== */
 #board-wrap{ max-width:none !important; width:100% !important; }
 #screen-game{ padding-left:2px !important; padding-right:2px !important; }
+/* ===== 对局固定布局：顶部HUD与底部按键常驻不裁切，剧情面板可收缩，棋盘吃掉全部剩余空间 =====
+   隐藏剧情时剧情面板收起 → board-wrap 自动撑满近全屏（仅保留顶部/底部按键）。 */
+#screen-game.active{ overflow:hidden !important; }
+#plot-panel{ flex:0 1 auto !important; min-height:0 !important; overflow-y:auto !important; }
+#g-goal-text{ flex:0 0 auto !important; }
+#g-goal-text + div{ flex:0 0 auto !important; }
+#board-wrap{ flex:1 1 0 !important; min-height:0 !important; }
+#boost-info{ flex:0 0 auto !important; }
+.game-controls{ flex:0 0 auto !important; }
 #g-goal-text{ font-size:13.5px !important; margin:4px 0 3px !important; letter-spacing:1px;
   text-shadow:0 1px 3px rgba(0,0,0,.5); }
 #boost-info{ margin-top:0 !important; font-size:11px !important; padding:1px 0 !important; }
@@ -863,20 +872,29 @@ body *{ max-height:999999px; }
 .screen{ padding-top:max(10px, env(safe-area-inset-top)) !important;
   padding-bottom:max(8px, env(safe-area-inset-bottom)) !important; }
 .top-toggles{ top:max(6px, env(safe-area-inset-top)) !important; right:8px !important; }
-/* ===== 首页一屏完整显示：标题不折行、元素紧凑化、不留页脚裁切 ===== */
+/* ===== 首页一屏饱满铺满：flex 均布整屏（顶部图标行让位、内容撑满不留黑） ===== */
 #screen-title{ padding-top:max(8px, env(safe-area-inset-top)) !important;
   padding-bottom:max(6px, env(safe-area-inset-bottom)) !important; }
-#screen-title .logo{ margin-top:46px !important; }   /* 避开右上角图标行 */
-#screen-title .logo .big{ font-size:clamp(28px, 10.5vw, 42px) !important; letter-spacing:2px !important;
-  white-space:nowrap !important; line-height:1.15 !important; }
-#screen-title .logo .sub{ font-size:12px !important; letter-spacing:4px !important; margin-top:2px !important; }
-#screen-title .title-art{ font-size:48px !important; margin:8px 0 !important; }
-#screen-title .title-art .ta-av{ width:52px !important; height:52px !important; }
-@media (max-width:380px){ #screen-title .title-art .ta-av{ width:46px !important; height:46px !important; } }
-#screen-title .title-tag{ font-size:11.5px !important; padding:4px 12px !important; margin:2px 0 10px !important; }
-#screen-title .title-menu{ gap:7px !important; max-width:280px !important; }
-#screen-title .title-menu .btn{ padding:9px 12px !important; font-size:15px !important; min-height:0 !important; }
-#screen-title .copyright{ margin-top:6px !important; padding:3px 10px !important; font-size:10px !important; }
+#screen-title.active{ display:flex !important; flex-direction:column; align-items:center;
+  justify-content:space-evenly; gap:0;
+  height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  overflow:hidden !important;
+  padding-top:max(52px, calc(env(safe-area-inset-top) + 48px)) !important; }
+#screen-title .logo{ margin-top:0 !important; }
+#screen-title .logo .big{ font-size:clamp(34px, 12vw, 50px) !important; letter-spacing:3px !important;
+  white-space:nowrap !important; line-height:1.15 !important;
+  text-shadow:0 3px 14px rgba(255,180,60,.35), 0 1px 3px rgba(0,0,0,.6); }
+#screen-title .logo .sub{ font-size:13px !important; letter-spacing:5px !important; margin-top:5px !important; }
+#screen-title .title-art{ font-size:0 !important; margin:6px 0 !important; }
+#screen-title .title-art .ta-av{ width:66px !important; height:66px !important; }
+#screen-title .title-tag{ font-size:12.5px !important; padding:6px 16px !important; margin:2px 0 !important; }
+#screen-title .title-menu{ gap:10px !important; max-width:300px !important; width:100%; }
+#screen-title .title-menu .btn{ padding:13px 12px !important; font-size:16.5px !important; min-height:0 !important;
+  border-radius:16px !important; letter-spacing:1px; }
+#screen-title .copyright{ margin-top:4px !important; padding:3px 10px !important; font-size:10.5px !important; }
+@supports not (height:100dvh){
+  #screen-title.active{ height:calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important; }
+}
 /* ===== 剧情框：按棋盘格数自适应（8x8 无框直显；高度回填棋盘上方空间，减少留黑） ===== */
 #screen-game.bs7 #plot-panel{ max-height:130px; overflow-y:auto; }
 #screen-game.bs6 #plot-panel{ max-height:118px; overflow-y:auto; }
@@ -901,7 +919,11 @@ body *{ max-height:999999px; }
 #screen-game.bs8 #plot-panel #plot-light{ display:none; }
 #screen-game.bs8 #plot-summary{ font-size:13px; line-height:1.7; color:#ffe9c0; }
 #screen-game.bs8 #plot-panel .meta{ margin-top:3px; font-size:11px; }
-/* 开发者头像上传面板 */
+/* ===== 小格模式（cell<37px，如8x8带剧情面板）：名称紧凑不截断 ===== */
+body.tile-sm .tile .tname{ font-size:8px !important; margin:0; padding:0; letter-spacing:-0.4px;
+  border:none; border-radius:4px; line-height:1.3; }
+body.tile-sm .tile .emoji{ font-size:calc(var(--cell, 46px) * 0.84); }
+/* ===== 开发者头像上传面板 */
 .dev-avatars{ margin-top:14px; border-top:1px dashed rgba(255,255,255,.25); padding-top:12px; }
 .dev-avatars h4{ margin:0 0 6px; font-size:15px; color:#ffd9a0; }
 .avatar-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
@@ -912,6 +934,18 @@ body *{ max-height:999999px; }
   box-shadow:0 0 10px rgba(255,215,0,.5); border:1px solid rgba(255,255,255,.3); }
 .av-cell .av-reset{ font-size:11px; margin-top:4px; padding:3px 8px; border-radius:8px;
   background:rgba(255,120,120,.2); border:1px solid rgba(255,140,140,.4); color:#ffd0d0; cursor:pointer; }
+/* ===== 剧情女声讲读按钮（说书氛围） ===== */
+#btn-plot-tts{ display:flex; align-items:center; justify-content:center; gap:7px; width:100%;
+  margin:0 0 7px; padding:8px 12px; font-size:13.5px; font-weight:800; letter-spacing:1px;
+  color:#4a2408; border:1px solid rgba(255,214,128,.65); border-radius:999px; cursor:pointer;
+  background:linear-gradient(180deg,#ffe7b3,#ffc66e);
+  box-shadow:0 3px 10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.75);
+  text-shadow:0 1px 0 rgba(255,255,255,.5); }
+#btn-plot-tts.playing{ background:linear-gradient(180deg,#ffd9c2,#ff9e8a); color:#5a1c10; }
+.tts-eq{ display:inline-flex; align-items:flex-end; gap:2.5px; height:13px; }
+.tts-eq i{ width:3px; border-radius:2px; background:#5a1c10; animation:ttsBounce .9s ease-in-out infinite; }
+.tts-eq i:nth-child(2){ animation-delay:.15s; } .tts-eq i:nth-child(3){ animation-delay:.3s; }
+@keyframes ttsBounce{ 0%,100%{ height:5px; } 50%{ height:13px; } }
 
 </style>
 <style>
@@ -3640,7 +3674,8 @@ try{
     setTimeout(function(){ try{
       var t = document.querySelector('#board .tile'), b = document.getElementById('board');
       if(t && b){ var c = t.getBoundingClientRect().width;
-        if(c > 20) b.style.setProperty('--cell', c.toFixed(1) + 'px'); }
+        if(c > 20) b.style.setProperty('--cell', c.toFixed(1) + 'px');
+        document.body.classList.toggle('tile-sm', c < 37); }   /* 小格模式：名称紧凑防截断 */
     }catch(e){} }, 130); };
   var __ht = 0;
   if(typeof ResizeObserver !== 'undefined'){
@@ -3664,9 +3699,102 @@ try{
         try{ document.documentElement.scrollTop=0; document.body.scrollTop=0; }catch(e){}
         try{ s.scrollTop=0; }catch(e){}
         setTimeout(function(){ try{ s.scrollTop=0; window.scrollTo(0,0); }catch(e){} }, 60);
-      }
+      } else if(s.id === 'screen-game'){ try{ window.__TTS.stop(); }catch(e){} }
     }).observe(s, {attributes:true, attributeFilter:['class']});
   });
+}catch(e){}
+/* ===== 剧情女声讲读（Web Speech TTS · 说书氛围：女声、慢速、句间停顿） ===== */
+window.__TTS = (function(){
+  var timer=null, playing=false, btn=null;
+  function pickVoice(){
+    try{
+      var vs = window.speechSynthesis.getVoices() || [];
+      var zh = vs.filter(function(v){ return /^zh|cmn|^yue/i.test(v.lang); });
+      var fem = zh.filter(function(v){
+        return /xiaoxiao|xiaoyi|yaoyao|tingting|ting-ting|meijia|mei-jia|huihui|xiaohan|xiaochen|xiaorou| female|女|wanwan|hanhan/i.test(v.name); });
+      if(fem.length) return fem[0];
+      if(zh.length) return zh[0];
+      return vs[0] || null;
+    }catch(e){ return null; }
+  }
+  function setBtn(on){
+    if(!btn) return;
+    btn.classList.toggle('playing', !!on);
+    btn.innerHTML = on
+      ? '<span class="tts-eq"><i></i><i></i><i></i></span> 正在讲读 · 点按停止'
+      : '🔊 听剧情 · 女声讲读';
+  }
+  function stop(keepBtn){
+    playing=false; clearTimeout(timer);
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+    if(keepBtn!==false) setBtn(false);
+  }
+  function speakRest(i, sents){
+    if(!playing) return;
+    if(i >= sents.length){ stop(); return; }
+    var u = new SpeechSynthesisUtterance(sents[i]);
+    var v = pickVoice(); if(v){ u.voice=v; u.lang=v.lang; } else { u.lang='zh-CN'; }
+    u.rate = 0.92; u.pitch = 1.14; u.volume = 1.0;   // 女声·说书语速
+    u.onend = function(){ if(!playing) return; timer=setTimeout(function(){ speakRest(i+1, sents); }, 240); };
+    u.onerror = function(){ stop(); };
+    try{ window.speechSynthesis.speak(u); }catch(e){ stop(); }
+  }
+  function start(text){
+    if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){
+      try{ if(window.toast) window.toast('当前浏览器不支持语音朗读'); }catch(e){}
+      return;
+    }
+    stop(false);
+    // 预热：部分内核 getVoices 首次为空
+    try{ window.speechSynthesis.getVoices(); }catch(e){}
+    var segs = text.replace(/\s+/g,' ').split(/([。！？；…])/), sents=[];
+    for(var i=0;i<segs.length;i+=2){
+      var s = (segs[i]+(segs[i+1]||'')).trim();
+      if(s) sents.push(s);
+    }
+    if(!sents.length) return;
+    playing=true; setBtn(true);
+    speakRest(0, sents);
+  }
+  return { start:start, stop:stop, isPlaying:function(){ return playing; }, setBtn:setBtn };
+})();
+try{
+  if(window.speechSynthesis){ window.speechSynthesis.getVoices(); }
+  var __pp = document.getElementById('plot-panel');
+  if(__pp && !document.getElementById('btn-plot-tts')){
+    var __b = document.createElement('button');
+    __b.id='btn-plot-tts'; __b.type='button';
+    __b.innerHTML = '🔊 听剧情 · 女声讲读';
+    __pp.insertBefore(__b, __pp.firstChild);
+    __b.onclick = function(){
+      if(window.__TTS.isPlaying()){ window.__TTS.stop(); return; }
+      var t='';
+      try{
+        var lv=document.getElementById('g-level-name'), ch=document.getElementById('g-chapter');
+        var sm=document.getElementById('plot-summary');
+        var pc=document.getElementById('plot-chars'), po=document.getElementById('plot-objects');
+        if(lv && lv.textContent && lv.textContent!=='—') t += '本关：'+lv.textContent+'。';
+        if(sm) t += sm.textContent;
+        if(pc && pc.textContent.trim()) t += '出镜人物：'+pc.textContent.replace(/×\d+/g,'')+'。';
+        if(po && po.textContent.trim()) t += '登场物件：'+po.textContent.replace(/×\d+/g,'')+'。';
+      }catch(e){}
+      if(!t.trim()){ try{ if(window.toast) window.toast('本关暂无剧情文本'); }catch(e){} return; }
+      window.__TTS.start(t);
+    };
+    window.__TTS.setBtn(null);
+  }
+  // 隐藏剧情 / 退出对局 → 停止讲读
+  var __bp=document.getElementById('btn-plot'), __bq=document.getElementById('btn-quit');
+  if(__bp) __bp.addEventListener('click', function(){ setTimeout(function(){
+    var p=document.getElementById('plot-panel');
+    if(p && p.classList.contains('hidden')) window.__TTS.stop();
+  },40); });
+  if(__bq) __bq.addEventListener('click', function(){ window.__TTS.stop(); });
+  // 换关（关卡名变化）→ 停止旧讲读
+  var __lv=document.getElementById('g-level-name');
+  if(__lv && typeof MutationObserver!=='undefined'){
+    new MutationObserver(function(){ window.__TTS.stop(); }).observe(__lv, {childList:true, characterData:true, subtree:true});
+  }
 }catch(e){}
 function paintTile(el, tile){
     const t = TILES[tile.key];
