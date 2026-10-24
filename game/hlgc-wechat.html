@@ -737,31 +737,31 @@ body, .screen{ color:#fff; }
 .up-avatar{ display:block; width:1.15em; height:1.15em; border-radius:50%; object-fit:cover; vertical-align:-0.22em; }
 /* ===== 棋盘物件：墨玉鎏金·电影质感（高端大气） ===== */
 /* 注意：基线 .tile 为 position:absolute（JS 定位），此处绝不可改 position */
-/* 鎏金描边（outline 不占布局，且不被 cat-* 的 box-shadow 覆盖）+ 外发光叠层 */
-.tile{ outline:1.2px solid rgba(255,232,175,.55); outline-offset:-2px;
-  filter:saturate(1.22) contrast(1.03) brightness(1.08);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.5), inset 0 -5px 10px rgba(0,0,0,.13),
-    0 5px 12px rgba(0,0,0,.38), 0 0 11px color-mix(in srgb, var(--g) 32%, transparent) !important; }
-/* 温润玉质渐变底：象牙高光 → 主色 → 沉底，三段过渡更绵密通透 */
+/* 鎏金描边（outline 不占布局，且不被 cat-* 的 box-shadow 覆盖）+ 外发光叠层
+   R15：滤镜加重锐化、去白雾高光覆层、主色提纯——个体色差一眼可辨，不再发糊 */
+.tile{ outline:1.5px solid rgba(255,236,185,.78); outline-offset:-2px;
+  filter:saturate(1.36) contrast(1.12) brightness(1.03);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5), inset 0 -6px 12px rgba(0,0,0,.20),
+    0 4px 11px rgba(0,0,0,.45), 0 0 10px color-mix(in srgb, var(--g) 30%, transparent) !important; }
+/* 高饱和玉质渐变底：主色大幅提纯（R14 白色掺入过多导致粉绿一片、个体区别不大） */
 .tile{ background:
-    radial-gradient(135% 72% at 50% 4%, rgba(255,255,255,.6), rgba(255,255,255,.14) 46%, transparent 62%),
-    linear-gradient(168deg, color-mix(in srgb, var(--c) 42%, #fff) 0%, color-mix(in srgb, var(--c) 86%, #fff) 34%, var(--c) 62%, color-mix(in srgb, var(--c) 58%, #20100a) 100%) !important; }
-/* 顶部柔光高光层（不写 position，避免破坏基线 absolute 定位） */
-.tile::after{ content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-  background:radial-gradient(130% 60% at 50% 0%, rgba(255,255,255,.32), transparent 48%); }
-/* 名称：半透墨玉磨砂条 + 暖金字，精致纤薄不喧宾 */
+    linear-gradient(168deg, color-mix(in srgb, var(--c) 80%, #fff) 0%, var(--c) 46%, color-mix(in srgb, var(--c) 62%, #1c0d07) 100%) !important; }
+/* 去除 R14 白雾高光覆层（发糊主因之一） */
+.tile::after{ display:none !important; }
+/* 名称：墨玉磨砂条 + 暖金粗字，纤薄但清晰醒目 */
 .tile .tname{ flex:0 0 auto; align-self:stretch; text-align:center;
-  font-size:clamp(9px, calc(var(--cell, 46px) * 0.18), 14px) !important; font-weight:700; letter-spacing:.2px;
+  font-size:clamp(9px, calc(var(--cell, 46px) * 0.18), 14px) !important; font-weight:900; letter-spacing:.2px;
   margin:0 1px 1px; padding:0; max-width:none; line-height:1.3;
-  color:#ffedc2; background:linear-gradient(rgba(26,11,9,.46), rgba(26,11,9,.62));
-  border:1px solid rgba(255,220,150,.28); border-radius:6px;
-  text-shadow:0 1px 1px rgba(0,0,0,.55); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  color:#fff3d2; background:linear-gradient(rgba(22,10,8,.78), rgba(22,10,8,.9));
+  border:1px solid rgba(255,220,150,.3); border-radius:6px;
+  text-shadow:0 1px 1.5px rgba(0,0,0,.75); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .tile .emoji{ flex:1 1 auto; min-height:0; margin:0;
   display:flex; align-items:center; justify-content:center; line-height:1;
-  font-size:calc(var(--cell, 46px) * 0.82);
-  filter:drop-shadow(0 3px 4px rgba(60,30,10,.45)) drop-shadow(0 -1px 2px rgba(255,255,255,.7)); }
+  font-size:calc(var(--cell, 46px) * 0.88);
+  filter:drop-shadow(0 2px 3px rgba(40,18,8,.5)); }
 .tile .emoji img.up-avatar{ width:84%; height:84%; margin:auto; border-radius:16%;
-  box-shadow:0 3px 9px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.4); }
+  filter:saturate(1.22) contrast(1.15) brightness(1.04);
+  box-shadow:0 2px 6px rgba(0,0,0,.6), 0 0 0 2px rgba(255,255,255,.55); }
 body.elderly .tile .emoji{ font-size:calc(var(--cell, 58px) * 0.84); }
 body.elderly-lg .tile .emoji{ font-size:calc(var(--cell, 62px) * 0.85); }
 body.elderly .tile .tname{ font-size:clamp(10px, calc(var(--cell, 58px) * 0.19), 16px) !important; }
@@ -841,8 +841,7 @@ html, body{ overflow-x:hidden !important; overscroll-behavior:none !important; }
   padding-top:max(52px, calc(env(safe-area-inset-top) + 48px)) !important; }
 #screen-title .logo{ margin-top:0 !important; }
 #screen-title .logo .big{ font-size:clamp(34px, 12vw, 50px) !important; letter-spacing:3px !important;
-  white-space:nowrap !important; line-height:1.15 !important;
-  text-shadow:0 3px 14px rgba(255,180,60,.35), 0 1px 3px rgba(0,0,0,.6); }
+  white-space:nowrap !important; line-height:1.15 !important; }
 #screen-title .logo .sub{ font-size:13px !important; letter-spacing:5px !important; margin-top:5px !important; }
 #screen-title .title-art{ font-size:0 !important; margin:6px 0 !important; }
 #screen-title .title-art .ta-av{ width:66px !important; height:66px !important; }
@@ -920,6 +919,37 @@ body.tile-sm .tile .emoji{ font-size:calc(var(--cell, 46px) * 0.84); }
 .tts-eq i{ width:3px; border-radius:2px; background:#5a1c10; animation:ttsBounce .9s ease-in-out infinite; }
 .tts-eq i:nth-child(2){ animation-delay:.15s; } .tts-eq i:nth-child(3){ animation-delay:.3s; }
 @keyframes ttsBounce{ 0%,100%{ height:5px; } 50%{ height:13px; } }
+/* ===== R15：弹窗按钮高清重铸（退出/难度/通关 · 全场可读） ===== */
+.ov-next{ padding:13px 14px !important; font-size:19px !important; font-weight:900 !important; letter-spacing:3px;
+  color:#5a2a06 !important; text-shadow:0 1px 0 rgba(255,255,255,.6) !important;
+  background:linear-gradient(180deg,#ffedb8,#f9c04a 52%,#e2922a) !important;
+  border:2px solid #ffe19a !important;
+  box-shadow:0 4px 14px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.8) !important; }
+.diff-btn{ font-size:17px !important; font-weight:900 !important; letter-spacing:1px;
+  color:#fff3d2 !important; text-shadow:0 1.5px 3px rgba(0,0,0,.75) !important;
+  border-width:1.5px !important;
+  box-shadow:0 3px 10px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.26) !important; }
+.diff-btn small{ color:#ffe3ae !important; opacity:1 !important; font-size:11.5px !important; font-weight:600;
+  text-shadow:0 1px 2px rgba(0,0,0,.8) !important; }
+/* 轻松/保留 = 翡翠玉绿（正向）；挑战/放弃 = 焰橙红（进取/危险），语义一眼可辨 */
+#diff-easy, #exit-keep{ background:linear-gradient(180deg, rgba(52,116,74,.6), rgba(24,64,42,.68)) !important;
+  border-color:rgba(140,232,175,.65) !important; }
+#diff-hard, #exit-reset{ background:linear-gradient(180deg, rgba(126,58,24,.6), rgba(72,30,12,.68)) !important;
+  border-color:rgba(255,162,110,.65) !important; }
+/* ===== R15：首页标题 · 金光流转（鎏金流光扫过 + 呼吸金晕） ===== */
+#screen-title .logo .big{
+  font-size:clamp(36px, 12.5vw, 54px) !important; letter-spacing:4px !important;
+  background:linear-gradient(100deg,#f5b53a 0%,#ffe98a 22%,#fff8dc 38%,#ffc531 55%,#ffe27a 72%,#ff9d2e 100%) !important;
+  background-size:220% 100% !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+  animation:titleSheen 4.5s linear infinite, titleGlow 2.8s ease-in-out infinite !important; }
+@keyframes titleSheen{ 0%{ background-position:0% 0; } 100%{ background-position:-220% 0; } }
+@keyframes titleGlow{
+  0%,100%{ filter:drop-shadow(0 0 8px rgba(255,200,70,.55)) drop-shadow(0 3px 10px rgba(0,0,0,.55)); }
+  50%{ filter:drop-shadow(0 0 20px rgba(255,215,100,.95)) drop-shadow(0 3px 10px rgba(0,0,0,.55)); } }
+/* ===== R15：微信登录按键用途小注 ===== */
+.wx-hint{ font-size:10.5px; color:rgba(255,236,200,.75); text-align:center; margin-top:4px;
+  letter-spacing:.5px; text-shadow:0 1px 2px rgba(0,0,0,.6); }
 
 </style>
 <style>
@@ -3579,7 +3609,7 @@ try{
 }catch(e){}
 /* ===== 剧情女声讲读（Web Speech TTS · 说书氛围：女声、慢速、句间停顿） ===== */
 window.__TTS = (function(){
-  var timer=null, autoTimer=null, playing=false, btn=null, started=false;
+  var timer=null, autoTimer=null, playing=false, btn=null, started=false, epoch=0;
   var KEY='hlm3x_tts_auto';
   function autoOn(){ try{ return (localStorage.getItem(KEY)||'1')!=='0'; }catch(e){ return true; } }
   function setAuto(v){ try{ localStorage.setItem(KEY, v?'1':'0'); }catch(e){} }
@@ -3608,14 +3638,15 @@ window.__TTS = (function(){
   }
   function speakRest(i, sents){
     if(!playing) return;
+    var my = epoch;
     if(i >= sents.length){ stop(); return; }
     var u = new SpeechSynthesisUtterance(sents[i]);
     var v = pickVoice(); if(v){ u.voice=v; u.lang=v.lang; } else { u.lang='zh-CN'; }
     u.rate = 0.92; u.pitch = 1.14; u.volume = 1.0;   // 女声·说书语速
     u.onstart = function(){ started = true; };
-    u.onend = function(){ if(!playing) return; timer=setTimeout(function(){ speakRest(i+1, sents); }, 240); };
-    u.onerror = function(){ stop(); };
-    try{ window.speechSynthesis.speak(u); }catch(e){ stop(); }
+    u.onend = function(){ if(!playing || my!==epoch) return; timer=setTimeout(function(){ speakRest(i+1, sents); }, 240); };
+    u.onerror = function(){ if(my===epoch) stop(); };
+    try{ window.speechSynthesis.resume(); window.speechSynthesis.speak(u); }catch(e){ stop(); }
   }
   function start(text){
     if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){
@@ -3623,7 +3654,9 @@ window.__TTS = (function(){
       return;
     }
     stop(false);
-    // 预热：部分内核 getVoices 首次为空
+    epoch++;
+    // 预热：部分内核 getVoices 首次为空 / 处于 paused 态
+    try{ window.speechSynthesis.resume(); }catch(e){}
     try{ window.speechSynthesis.getVoices(); }catch(e){}
     var segs = text.replace(/\s+/g,' ').split(/([。！？；…])/), sents=[];
     for(var i=0;i<segs.length;i+=2){
@@ -3633,11 +3666,25 @@ window.__TTS = (function(){
     if(!sents.length) return;
     playing=true; started=false; setBtn(true);
     speakRest(0, sents);
-    // 无声检测：1.6s 仍未真正开口 → 明确提示（微信部分内核无语音包）
+    // 无声检测：1.6s 仍未真正开口 → 兜底重试（不挑音色、系统默认直读）
     setTimeout(function(){
       if(playing && !started){
-        stop();
-        try{ if(window.toast) window.toast('本浏览器无法朗读：请复制链接到系统浏览器打开'); }catch(e){}
+        epoch++;
+        var my = epoch;
+        try{ window.speechSynthesis.cancel(); }catch(e){}
+        var u2 = new SpeechSynthesisUtterance(sents[0]);
+        u2.lang='zh-CN'; u2.rate=0.95; u2.volume=1.0;
+        u2.onstart = function(){ started = true; };
+        u2.onend = function(){ if(!playing || my!==epoch) return; timer=setTimeout(function(){ speakRest(1, sents); }, 240); };
+        u2.onerror = function(){ if(my===epoch) stop(); };
+        try{ window.speechSynthesis.resume(); window.speechSynthesis.speak(u2); }catch(e){ stop(); }
+        // 二次仍无声 → 明确提示（个别浏览器确实无语音引擎）
+        setTimeout(function(){
+          if(playing && !started){
+            stop();
+            try{ if(window.toast) window.toast('本浏览器缺少语音引擎：请改用微信或华为/系统浏览器最新版打开'); }catch(e){}
+          }
+        }, 2200);
       }
     }, 1600);
   }
@@ -3672,7 +3719,12 @@ window.__TTS = (function(){
            autoOn:autoOn, setAuto:setAuto, scheduleAuto:scheduleAuto, collectText:collectText };
 })();
 try{
-  if(window.speechSynthesis){ window.speechSynthesis.getVoices(); }
+  if(window.speechSynthesis){
+    window.speechSynthesis.getVoices();
+    if(typeof window.speechSynthesis.addEventListener === 'function'){
+      try{ window.speechSynthesis.addEventListener('voiceschanged', function(){ try{ window.speechSynthesis.getVoices(); }catch(e){} }); }catch(e){}
+    }
+  }
   // 首次用户手势解锁语音内核（微信部分内核需手势后才允许出声）
   ['pointerdown','touchend'].forEach(function(ev){
     window.addEventListener(ev, function(){ try{ window.speechSynthesis.resume(); }catch(e){} }, {passive:true});
@@ -3720,9 +3772,67 @@ try{
     var __lt=null;
     new MutationObserver(function(){
       window.__TTS.stop();
+      /* R15：记录最近游玩的关卡（进度保留提示用） */
+      try{ var __nt=__lv.textContent; if(__nt && __nt!=='—') localStorage.setItem('hlm3x_last_lv', __nt); }catch(e){}
       clearTimeout(__lt);
       __lt = setTimeout(function(){ try{ window.__TTS.scheduleAuto(400); }catch(e){} }, 600);
     }).observe(__lv, {childList:true, characterData:true, subtree:true});
+  }
+}catch(e){}
+/* ===== R15：进度保留 24 小时有效期（保留并退出 → 期内继续累计，超时自动清空） ===== */
+var __toast = function(m){ try{
+  if(typeof toast==='function' && !toast.nodeType){ toast(m); return; }
+}catch(e){}
+  try{
+    var el=document.getElementById('toast');
+    if(el){ el.textContent=m; el.classList.add('show');
+      setTimeout(function(){ el.classList.remove('show'); },1800); }
+  }catch(e){}
+};
+try{
+  var __PK='hlmm', __TK='hlm3x_keep_ts', __DAY=24*3600*1000;
+  var __pKeys=[__PK+'_points',__PK+'_play_total',__PK+'_rank',__PK+'_unlocked',__PK+'_unlock_all',
+               __PK+'_stars_easy',__PK+'_stars_hard',__PK+'_exchange_used'];
+  function __keepTs(){ try{ return +(localStorage.getItem(__TK)||'0'); }catch(e){ return 0; } }
+  /* ① 「保留并退出」→ 盖保留时间戳（叠加监听，不改写原逻辑） */
+  var __ek=document.getElementById('exit-keep');
+  if(__ek) __ek.addEventListener('click', function(){
+    try{ localStorage.setItem(__TK, String(Date.now())); }catch(e){}
+  });
+  /* ② 「放弃本机进度」→ 同步清除保留时间戳 */
+  var __er=document.getElementById('exit-reset');
+  if(__er) __er.addEventListener('click', function(){ try{ localStorage.removeItem(__TK); }catch(e){} });
+  /* ③ 退出面板文案更新：写明 24 小时有效期（所见即所得） */
+  var __tip=document.querySelector('#exit-panel .diff-tip');
+  if(__tip) __tip.innerHTML='积分与解锁进度将在本机保留 <b style="color:#ffd98a">24 小时</b>，期内再次打开自动继续累计；超时自动清空。<br/>如想立即清空，可选「放弃本机进度」。';
+  /* ④ 启动检查：超过 24 小时 → 清空进度（保留适老/语音/头像等偏好） */
+  var __ts=__keepTs();
+  if(__ts && Date.now()-__ts>__DAY){
+    __pKeys.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
+    try{ localStorage.removeItem(__TK); }catch(e){}
+    try{ if(typeof Ranking!=='undefined' && Ranking.reset) Ranking.reset(); }catch(e){}
+    setTimeout(function(){ try{ __toast('⏳ 上次保留的进度已超 24 小时，已自动清空重计'); }catch(e){} }, 1500);
+  } else if(__ts){
+    var __left=Math.max(1, Math.ceil((__ts+__DAY-Date.now())/3600000));
+    setTimeout(function(){ try{ __toast('💾 进度保留中（剩余约 '+__left+' 小时），通关积分继续累计'); }catch(e){} }, 1500);
+  }
+  /* ⑤ 首页「步入红楼」→ 保留期内提示上次玩到哪回（让"保留"看得见） */
+  var __st=document.getElementById('btn-start');
+  if(__st) __st.addEventListener('click', function(){
+    var __t2=__keepTs(); if(!__t2 || Date.now()-__t2>__DAY) return;
+    var __last=null; try{ __last=localStorage.getItem('hlm3x_last_lv'); }catch(e){}
+    if(__last) setTimeout(function(){ try{ __toast('📖 上次进行到《'+__last+'》，可在选关页继续挑战'); }catch(e){} }, 900);
+  });
+}catch(e){}
+/* ===== R15：微信登录按键 · 用途小注 ===== */
+try{
+  var __wz=document.getElementById('wx-zone');
+  if(__wz && !__wz.getAttribute('data-hinted')){
+    __wz.setAttribute('data-hinted','1');
+    var __wh=document.createElement('div');
+    __wh.className='wx-hint';
+    __wh.textContent='微信登录：保存排行榜成绩与联机互助身份 · 当前为体验模式，不发起真实请求';
+    if(__wz.parentNode) __wz.parentNode.insertBefore(__wh, __wz.nextSibling);
   }
 }catch(e){}
 function paintTile(el, tile){
@@ -8389,5 +8499,4 @@ window.addEventListener('DOMContentLoaded', App.init);
 </script>
 
 </body>
-<!-- build r14b 20261024-0917 -->
 </html>
