@@ -976,21 +976,42 @@ body.mode-hot .tile{ filter:saturate(1.4) contrast(1.1) brightness(1.03) !import
   outline-color:rgba(255,168,88,.62) !important; }
 body.mode-hot .float-score{ color:#ffd27a; font-weight:900;
   text-shadow:0 0 9px rgba(255,110,30,.95), 0 2px 3px rgba(0,0,0,.65); }
-/* ===== R16：TTS 声线折叠选择（小圆chip+迷你浮层，不占剧情框空间） ===== */
-#plot-panel{ position:relative; }
-#voice-chip{ position:absolute; right:7px; top:7px; width:28px; height:28px; border-radius:50%;
-  font-size:13px; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:32;
-  background:linear-gradient(180deg,rgba(255,231,179,.95),rgba(255,198,110,.95)); color:#4a2408;
-  border:1px solid rgba(255,214,128,.7); box-shadow:0 2px 6px rgba(0,0,0,.35);
+/* ===== R18：对局设置 · 右侧悬浮折叠（声线/听剧情/棋盘/底色 四合一，不占布局空间） ===== */
+#r18-fab{ position:fixed; right:5px; width:34px; height:34px; border-radius:50%; z-index:46;
+  display:none; align-items:center; justify-content:center; font-size:17px; cursor:pointer;
+  color:#ffe9c8; background:linear-gradient(180deg,rgba(64,32,16,.92),rgba(28,13,7,.92));
+  border:1px solid rgba(255,214,140,.5); box-shadow:0 2px 9px rgba(0,0,0,.5);
   -webkit-user-select:none; user-select:none; }
-.voice-pop{ position:absolute; right:7px; top:39px; display:none; gap:5px; z-index:33; padding:6px;
-  background:rgba(30,14,10,.94); border:1px solid rgba(255,214,128,.5); border-radius:12px;
-  box-shadow:0 6px 16px rgba(0,0,0,.5); }
-.voice-pop.show{ display:flex; }
-.voice-pop b{ padding:6px 11px; font-size:12px; font-weight:700; border-radius:9px; cursor:pointer;
-  color:#ffe9c8; background:rgba(255,246,225,.1); border:1px solid rgba(255,214,140,.3); white-space:nowrap; }
-.voice-pop b.on{ color:#5a2a06 !important; background:linear-gradient(180deg,#ffe7b3,#ffc66e) !important;
+#r18-fab.show{ display:flex; }
+#r18-fab:active{ transform:scale(.93); }
+#r18-panel{ position:fixed; right:5px; width:max-content; max-width:84vw; z-index:47; display:none;
+  flex-direction:column; gap:8px; padding:10px 11px; border-radius:14px;
+  background:rgba(24,11,7,.95); border:1px solid rgba(255,214,140,.42);
+  box-shadow:0 10px 26px rgba(0,0,0,.55); }
+#r18-panel.show{ display:flex; }
+.r18-row{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.r17-lab{ font-size:10px; color:rgba(255,236,200,.82); letter-spacing:1px; white-space:nowrap; }
+.r17-chip{ padding:4px 9px; font-size:11.5px; font-weight:800; border-radius:9px; cursor:pointer;
+  color:#ffe9c8; background:rgba(255,246,225,.08); border:1px solid rgba(255,214,140,.3);
+  white-space:nowrap; -webkit-user-select:none; user-select:none; }
+.r17-chip.on{ color:#5a2a06 !important; background:linear-gradient(180deg,#ffe7b3,#ffc66e) !important;
   border-color:#ffe19a !important; }
+.r17-dot{ width:20px; height:20px; border-radius:50%; cursor:pointer; border:2px solid rgba(255,255,255,.35);
+  box-shadow:0 1px 4px rgba(0,0,0,.4); -webkit-user-select:none; user-select:none; }
+.r17-dot.on{ border-color:#ffe27a; box-shadow:0 0 8px rgba(255,214,90,.8); }
+.r18-vk{ padding:4px 11px; font-size:12px; font-weight:800; border-radius:9px; cursor:pointer;
+  color:#ffe9c8; background:rgba(255,246,225,.08); border:1px solid rgba(255,214,140,.3);
+  white-space:nowrap; -webkit-user-select:none; user-select:none; }
+.r18-vk.on{ color:#5a2a06 !important; background:linear-gradient(180deg,#ffe7b3,#ffc66e) !important;
+  border-color:#ffe19a !important; }
+#r18-panel .r17-dot{ width:22px; height:22px; }
+#r18-tts-slot:empty{ display:none; }
+#r18-panel #btn-plot-tts{ font-size:12px; padding:7px 14px; }
+/* ===== R18-①：微信引导浮层（增强基线 #wx-hint：文案/图标更新，层级更高更醒目） ===== */
+#wx-hint{ z-index:300 !important; }
+#wx-hint .wx-card{ padding:22px 20px; }
+#wx-hint .wx-title{ color:#ffe27a; }
+#wx-hint .wx-btn{ min-height:50px; }
 /* ===== R16：四季·24节气氛围（画布+节气铭牌） ===== */
 #season-fx{ position:fixed; inset:0; pointer-events:none; z-index:55; opacity:.82; }
 .season-badge{ position:fixed; left:8px; bottom:calc(env(safe-area-inset-bottom) + 8px); z-index:56;
@@ -1023,21 +1044,7 @@ body.season-winter #board-wrap::after{ background:radial-gradient(90% 70% at 50%
   border:1px solid rgba(255,214,140,.22) !important; color:#ffe9c8 !important; }
 #screen-title.active{ padding-top:max(72px, calc(env(safe-area-inset-top) + 66px)) !important; }
 #screen-title .logo .big{ font-size:clamp(30px, 10.5vw, 44px) !important; }
-/* ===== R17-③：对局设置条（棋盘 6/7/8 + 界面底色） ===== */
-#r17-bar{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px 10px;
-  flex:0 0 auto; margin:4px 0 2px; padding:5px 8px; border-radius:12px; position:relative; z-index:31;
-  background:linear-gradient(180deg, rgba(30,15,10,.72), rgba(30,15,10,.55));
-  border:1px solid rgba(255,214,140,.25); }
-.r17-grp{ display:flex; align-items:center; gap:4px; min-width:0; }
-.r17-lab{ font-size:10px; color:rgba(255,236,200,.82); letter-spacing:1px; white-space:nowrap; }
-.r17-chip{ padding:4px 9px; font-size:11.5px; font-weight:800; border-radius:9px; cursor:pointer;
-  color:#ffe9c8; background:rgba(255,246,225,.08); border:1px solid rgba(255,214,140,.3);
-  white-space:nowrap; -webkit-user-select:none; user-select:none; }
-.r17-chip.on{ color:#5a2a06 !important; background:linear-gradient(180deg,#ffe7b3,#ffc66e) !important;
-  border-color:#ffe19a !important; }
-.r17-dot{ width:20px; height:20px; border-radius:50%; cursor:pointer; border:2px solid rgba(255,255,255,.35);
-  box-shadow:0 1px 4px rgba(0,0,0,.4); -webkit-user-select:none; user-select:none; }
-.r17-dot.on{ border-color:#ffe27a; box-shadow:0 0 8px rgba(255,214,90,.8); }
+/* ===== R17-③（R18 改版）：原对局设置条已并入右侧折叠面板 #r18-panel（样式见上） ===== */
 /* ===== R17-④：可选界面底色主题（body.bg-*；同时压过基线 #screen-game[data-light] 氛围底色） ===== */
 body.bg-amber #app, body.bg-amber #screen-game{ background:
   radial-gradient(130% 100% at 50% 50%, transparent 52%, rgba(60,28,4,.5) 100%),
@@ -1066,7 +1073,6 @@ body.bg-ivory #plot-panel .meta b{ color:#6b3a10 !important; text-shadow:none !i
 body.bg-ivory #plot-chars .chip, body.bg-ivory #plot-objects .chip{ color:#4a2c14 !important;
   background:rgba(120,80,30,.12) !important; border-color:rgba(150,105,50,.45) !important; text-shadow:none !important; }
 body.bg-ivory #screen-game .hud{ background:linear-gradient(180deg, rgba(96,62,22,.94), rgba(96,62,22,.82)); }
-body.bg-ivory #r17-bar{ background:rgba(96,62,22,.55); }
 body.bg-ivory .game-controls .btn{ background:rgba(96,62,22,.28) !important; text-shadow:0 1px 2px rgba(255,255,255,.3); }
 
 </style>
@@ -3761,6 +3767,20 @@ window.__TTS = (function(){
       ? '<span class="tts-eq"><i></i><i></i><i></i></span> 正在讲读 · 点按停止'
       : '🔊 听剧情 · ' + voiceLabel() + '讲读' + (autoOn() ? '' : '（自动已关）');
   }
+  /* R18：记录播放进度（声线即时切换时从当前句续读） */
+  var curSents=[], curIdx=0;
+  function mkU(text, sents, idx, my){
+    var u = new SpeechSynthesisUtterance(text);
+    var __vk = voiceKind();
+    var v = pickVoice(__vk); if(v){ u.voice=v; u.lang=v.lang; } else { u.lang='zh-CN'; }
+    u.rate = 0.92; u.pitch = 1.14; u.volume = 1.0;   // 说书语速·默认女声
+    if(__vk==='male'){ u.rate = 0.9; u.pitch = 0.72; }   // 男声·低沉说书
+    if(__vk==='child'){ u.rate = 1.0; u.pitch = 1.7; }   // 童声·高亮清脆
+    u.onstart = function(){ started = true; };
+    u.onend = function(){ if(!playing || my!==epoch) return; curIdx=idx+1; timer=setTimeout(function(){ speakRest(idx+1, sents); }, 240); };
+    u.onerror = function(){ if(my===epoch) stop(); };
+    return u;
+  }
   function stop(keepBtn){
     playing=false; started=false; clearTimeout(timer);
     try{ window.speechSynthesis.cancel(); }catch(e){}
@@ -3770,16 +3790,21 @@ window.__TTS = (function(){
     if(!playing) return;
     var my = epoch;
     if(i >= sents.length){ stop(); return; }
-    var u = new SpeechSynthesisUtterance(sents[i]);
-    var __vk = voiceKind();
-    var v = pickVoice(__vk); if(v){ u.voice=v; u.lang=v.lang; } else { u.lang='zh-CN'; }
-    u.rate = 0.92; u.pitch = 1.14; u.volume = 1.0;   // 说书语速·默认女声
-    if(__vk==='male'){ u.rate = 0.9; u.pitch = 0.72; }   // 男声·低沉说书
-    if(__vk==='child'){ u.rate = 1.0; u.pitch = 1.7; }   // 童声·高亮清脆
-    u.onstart = function(){ started = true; };
-    u.onend = function(){ if(!playing || my!==epoch) return; timer=setTimeout(function(){ speakRest(i+1, sents); }, 240); };
-    u.onerror = function(){ if(my===epoch) stop(); };
+    curSents=sents; curIdx=i;
+    var u = mkU(sents[i], sents, i, my);
     try{ window.speechSynthesis.resume(); window.speechSynthesis.speak(u); }catch(e){ stop(); }
+  }
+  /* R18：声线即时生效——正在讲读时切换 女声/男声/童声，从当前句无缝续读 */
+  function applyVoiceNow(){
+    if(!playing || !curSents.length) return;
+    epoch++; started=false; clearTimeout(timer);
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+    var my=epoch;
+    setTimeout(function(){
+      if(!playing || my!==epoch) return;
+      try{ window.speechSynthesis.resume(); }catch(e){}
+      speakRest(curIdx, curSents);
+    }, 200);
   }
   function start(text){
     if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){
@@ -3798,28 +3823,35 @@ window.__TTS = (function(){
     }
     if(!sents.length) return;
     playing=true; started=false; setBtn(true);
-    speakRest(0, sents);
-    // 无声检测：1.6s 仍未真正开口 → 兜底重试（不挑音色、系统默认直读）
+    curSents=sents; curIdx=0;
+    /* R18 无声修复①：cancel() 后立刻 speak() 在部分内核会被吞掉 → 延时一拍再开口 */
+    setTimeout(function(){
+      if(playing && !started) speakRest(0, sents);
+    }, 180);
+    /* 无声检测：2.1s 仍未真正开口 → 兜底重试（cancel 后停 260ms，再用系统默认音直读） */
     setTimeout(function(){
       if(playing && !started){
         epoch++;
         var my = epoch;
         try{ window.speechSynthesis.cancel(); }catch(e){}
-        var u2 = new SpeechSynthesisUtterance(sents[0]);
-        u2.lang='zh-CN'; u2.rate=0.95; u2.volume=1.0;
-        u2.onstart = function(){ started = true; };
-        u2.onend = function(){ if(!playing || my!==epoch) return; timer=setTimeout(function(){ speakRest(1, sents); }, 240); };
-        u2.onerror = function(){ if(my===epoch) stop(); };
-        try{ window.speechSynthesis.resume(); window.speechSynthesis.speak(u2); }catch(e){ stop(); }
-        // 二次仍无声 → 明确提示（个别浏览器确实无语音引擎）
         setTimeout(function(){
-          if(playing && !started){
-            stop();
-            try{ if(window.toast) window.toast('本浏览器缺少语音引擎：请改用微信或华为/系统浏览器最新版打开'); }catch(e){}
-          }
-        }, 2200);
+          if(!playing || my!==epoch) return;
+          var u2 = mkU(sents[curIdx]||sents[0], sents, curIdx, my);
+          u2.voice = null; u2.lang='zh-CN'; u2.rate=0.95; u2.pitch=1.0;  // 弃选音色·系统默认直读
+          try{ window.speechSynthesis.resume(); window.speechSynthesis.speak(u2); }catch(e){ stop(); }
+          /* 二次仍无声 → 明确提示（个别内核确实无语音引擎） */
+          setTimeout(function(){
+            if(playing && !started){
+              stop();
+              var __inWX = /MicroMessenger/i.test(navigator.userAgent||'');
+              try{ if(window.toast) window.toast(__inWX
+                ? '本内核缺语音引擎：点右上角 ··· 选「在浏览器打开」即可听讲读'
+                : '本浏览器缺少语音引擎：请改用系统浏览器打开'); }catch(e){}
+            }
+          }, 2600);
+        }, 260);
       }
-    }, 1600);
+    }, 2100);
   }
   function collectText(){
     var t='';
@@ -3850,7 +3882,8 @@ window.__TTS = (function(){
   }
   return { start:start, stop:stop, isPlaying:function(){ return playing; }, setBtn:setBtn,
            autoOn:autoOn, setAuto:setAuto, scheduleAuto:scheduleAuto, collectText:collectText,
-           voiceKind:voiceKind, setVoiceKind:setVoiceKind, voiceLabel:voiceLabel };
+           voiceKind:voiceKind, setVoiceKind:setVoiceKind, voiceLabel:voiceLabel, applyVoiceNow:applyVoiceNow,
+           attachBtn:function(b){ btn=b; } };
 })();
 try{
   if(window.speechSynthesis){
@@ -3864,11 +3897,15 @@ try{
     window.addEventListener(ev, function(){ try{ window.speechSynthesis.resume(); }catch(e){} }, {passive:true});
   });
   var __pp = document.getElementById('plot-panel');
+  /* R18：听剧情按钮延迟创建 → 优先放进右侧折叠面板的插槽（面板稍后于本段同步创建） */
+  setTimeout(function(){
   if(__pp && !document.getElementById('btn-plot-tts')){
     var __b = document.createElement('button');
     __b.id='btn-plot-tts'; __b.type='button';
     __b.innerHTML = '🔊 听剧情 · 女声讲读';
-    __pp.insertBefore(__b, __pp.firstChild);
+    var __slot=document.getElementById('r18-tts-slot');
+    if(__slot) __slot.appendChild(__b); else __pp.insertBefore(__b, __pp.firstChild);
+    window.__TTS.attachBtn(__b);   /* R18：绑定到闭包，setBtn 才能刷新按钮状态/声线文案 */
     // 长按 0.6s 切换「自动讲读」；短按为 听/停
     var __lp=null, __sup=false;
     __b.addEventListener('pointerdown', function(){
@@ -3893,6 +3930,7 @@ try{
     };
     window.__TTS.setBtn(false);
   }
+  }, 0);
   // 隐藏剧情 / 退出对局 → 停止讲读
   var __bp=document.getElementById('btn-plot'), __bq=document.getElementById('btn-quit');
   if(__bp) __bp.addEventListener('click', function(){ setTimeout(function(){
@@ -4060,29 +4098,7 @@ if(__oc && typeof MutationObserver!=='undefined'){
     setTimeout(function(){ try{ __oc.textContent=line; }catch(e){} }, 60);
   }).observe(__oc,{childList:true,characterData:true,subtree:true});
 }
-/* ---------- ④ TTS 声线折叠选择（小chip，默认女声） ---------- */
-var __pp2=document.getElementById('plot-panel');
-if(__pp2 && window.__TTS && !document.getElementById('voice-chip')){
-  var chip=document.createElement('div'); chip.id='voice-chip'; chip.title='切换讲读声线'; chip.textContent='🎙';
-  var pop=document.createElement('div'); pop.className='voice-pop'; pop.id='voice-pop';
-  pop.innerHTML='<b data-k="female">女声</b><b data-k="male">男声</b><b data-k="child">童声</b>';
-  __pp2.appendChild(pop); __pp2.appendChild(chip);
-  var __refresh=function(){
-    var k=window.__TTS.voiceKind();
-    pop.querySelectorAll('b').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-k')===k); });
-  };
-  chip.onclick=function(ev){ ev.stopPropagation(); pop.classList.toggle('show'); __refresh(); };
-  pop.addEventListener('click',function(ev){
-    var b=ev.target; while(b && b.tagName!=='B') b=b.parentNode;
-    if(!b) return;
-    window.__TTS.setVoiceKind(b.getAttribute('data-k'));
-    window.__TTS.setBtn(false); __refresh();
-    pop.classList.remove('show');
-    __toast('讲读声线已切换为「'+b.textContent+'」');
-  });
-  document.addEventListener('click',function(){ pop.classList.remove('show'); });
-  __refresh();
-}
+/* ---------- ④ TTS 声线选择已并入 R18 右侧折叠面板（见 R17-A 段） ---------- */
 /* ---------- ⑤ 四季 + 24节气氛围（自动按日期判定，画布粒子+节气铭牌） ---------- */
 try{
   var __TERMS=[[1,5,'小寒'],[1,20,'大寒'],[2,4,'立春'],[2,19,'雨水'],[3,5,'惊蛰'],[3,20,'春分'],
@@ -4199,10 +4215,9 @@ try{
     window.Game.__bszPatched = true;
   }
   if(window.Game) __patchStart(); else setTimeout(__patchStart, 0);
-  /* 设置条 UI：插入对局屏 HUD 下方 */
+  /* R18 设置面板 UI：右侧悬浮折叠（⚙圆钮 → 下拉面板），不占剧情/棋盘布局空间 */
   var __hud=document.querySelector('#screen-game .hud');
-  if(__hud && !document.getElementById('r17-bar')){
-    var bar=document.createElement('div'); bar.id='r17-bar';
+  if(__hud && !document.getElementById('r18-fab')){
     var bs0=__getBS(), bg0=__getBG();
     var chips='';
     [6,7,8].forEach(function(n){ chips+='<span class="r17-chip'+(bs0===n?' on':'')+'" data-bs="'+n+'">'+n+'×'+n+'</span>'; });
@@ -4211,16 +4226,43 @@ try{
       +'<span class="r17-dot'+(bg0==='bg-teal'?' on':'')+'" data-bg="bg-teal" style="background:linear-gradient(160deg,#123c34,#2e8a72)" title="黛青竹韵"></span>'
       +'<span class="r17-dot'+(bg0==='bg-violet'?' on':'')+'" data-bg="bg-violet" style="background:linear-gradient(160deg,#2a1450,#6a46b0)" title="紫气东来"></span>'
       +'<span class="r17-dot'+(bg0==='bg-ivory'?' on':'')+'" data-bg="bg-ivory" style="background:linear-gradient(160deg,#fdf6e8,#dcbf8a)" title="月白宣纸"></span>';
-    bar.innerHTML='<div class="r17-grp"><span class="r17-lab">▦ 棋盘</span>'+chips+'</div>'
-      +'<div class="r17-grp"><span class="r17-lab">🎨 底色</span>'+dots+'</div>';
-    __hud.parentNode.insertBefore(bar, __hud.nextSibling);
-    bar.addEventListener('click', function(ev){
+    var fab=document.createElement('div'); fab.id='r18-fab'; fab.title='对局设置'; fab.textContent='⚙';
+    var panel=document.createElement('div'); panel.id='r18-panel';
+    panel.innerHTML='<div class="r18-row"><span class="r17-lab">🎙 声线</span>'
+        +'<b class="r18-vk'+(window.__TTS&&window.__TTS.voiceKind()==='female'?' on':'')+'" data-k="female">女声</b>'
+        +'<b class="r18-vk" data-k="male">男声</b>'
+        +'<b class="r18-vk" data-k="child">童声</b></div>'
+      +'<div class="r18-row r18-tts-row"><span id="r18-tts-slot"></span></div>'
+      +'<div class="r18-row"><span class="r17-lab">▦ 棋盘</span>'+chips+'</div>'
+      +'<div class="r18-row"><span class="r17-lab">🎨 底色</span>'+dots+'</div>';
+    document.body.appendChild(fab); document.body.appendChild(panel);
+    /* ⚙ 位置：吸附对局 HUD 右下沿（随布局自适应），不遮标题、不压按键 */
+    function __placeFab(){
+      try{
+        var r=__hud.getBoundingClientRect();
+        fab.style.top=(r.bottom+6)+'px';
+        panel.style.top=(r.bottom+44)+'px';
+      }catch(e){ fab.style.top='120px'; panel.style.top='158px'; }
+    }
+    __placeFab();
+    window.addEventListener('resize', __placeFab);
+    fab.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      panel.classList.toggle('show');
+      if(panel.classList.contains('show')){
+        __placeFab();
+        var k=window.__TTS ? window.__TTS.voiceKind() : 'female';
+        panel.querySelectorAll('.r18-vk').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-k')===k); });
+      }
+    });
+    panel.addEventListener('click', function(ev){
+      ev.stopPropagation();   /* 点面板内部不关闭 */
       var c=ev.target;
       if(c.classList && c.classList.contains('r17-chip')){
         var n=parseInt(c.getAttribute('data-bs'),10);
         if(__getBS()===n) return;
         try{ localStorage.setItem(__BS_KEY, String(n)); }catch(e){}
-        bar.querySelectorAll('.r17-chip').forEach(function(x){ x.classList.toggle('on', parseInt(x.getAttribute('data-bs'),10)===n); });
+        panel.querySelectorAll('.r17-chip').forEach(function(x){ x.classList.toggle('on', parseInt(x.getAttribute('data-bs'),10)===n); });
         if(window.Game && window.Game.isPlaying && window.Game.isPlaying() && __lastStart){
           try{ window.__TTS && window.__TTS.stop(); }catch(e){}
           try{ window.Game.start(__lastStart[0], __lastStart[1], __lastStart[2], __lastStart[3]); }catch(e){}
@@ -4235,12 +4277,32 @@ try{
         var v=c.getAttribute('data-bg')||'';
         try{ localStorage.setItem(__BG_KEY, v); }catch(e){}
         __applyBG(v);
-        bar.querySelectorAll('.r17-dot').forEach(function(x){ x.classList.toggle('on', (x.getAttribute('data-bg')||'')===v); });
+        panel.querySelectorAll('.r17-dot').forEach(function(x){ x.classList.toggle('on', (x.getAttribute('data-bg')||'')===v); });
         __toast('🎨 界面底色已切换');
+        return;
+      }
+      if(c.classList && c.classList.contains('r18-vk')){
+        window.__TTS.setVoiceKind(c.getAttribute('data-k'));
+        window.__TTS.setBtn(false);
+        panel.querySelectorAll('.r18-vk').forEach(function(x){ x.classList.toggle('on', x===c); });
+        var __live = window.__TTS.isPlaying();
+        if(__live && window.__TTS.applyVoiceNow) window.__TTS.applyVoiceNow();
+        __toast('🎙 讲读声线：'+c.textContent+(__live?'（本句起即时生效）':''));
       }
     });
+    document.addEventListener('click', function(){ panel.classList.remove('show'); });
+    /* 仅对局屏显示 ⚙；离场自动收起面板 */
+    var __sg=document.getElementById('screen-game');
+    if(__sg && typeof MutationObserver!=='undefined'){
+      new MutationObserver(function(){
+        var on=__sg.classList.contains('active');
+        fab.classList.toggle('show', on);
+        if(!on) panel.classList.remove('show'); else __placeFab();
+      }).observe(__sg,{attributes:true, attributeFilter:['class']});
+      if(__sg.classList.contains('active')) fab.classList.add('show');
+    }
   }
-}catch(e){}
+} catch(e){}
 /* ===== R17-B：提示按键成功反馈 + 节气铭牌避让（不再压住底部文字/按键） ===== */
 try{
   var __bh=document.getElementById('btn-hint');
@@ -4273,6 +4335,42 @@ try{
       __toast('ℹ️ 当前浏览器缺少中文语音引擎，讲读可能无声，建议更换浏览器');
     }
   }, 2600);
+}catch(e){}
+/* ===== R18-①：微信内运行引导增强（基线 #wx-hint 仅微信UA弹出；本段更新文案并兜底创建） ===== */
+try{
+  function __wgEnhance(){
+    if(!/MicroMessenger/i.test(navigator.userAgent||'')) return;
+    var d = document.getElementById('wx-hint');
+    if(!d){
+      d = document.createElement('div'); d.id = 'wx-hint';
+      d.innerHTML = '<div class="wx-card">'
+        + '<div class="wx-ico">🎮</div>'
+        + '<div class="wx-title">微信内可直接游玩</div>'
+        + '<div class="wx-sub">已自动适配微信运行；如遇<b>讲读无声</b>或卡顿，<br>点右上角 <b>···</b> → <b>在浏览器打开</b> 体验更佳。</div>'
+        + '<div class="wx-actions">'
+        +   '<button class="wx-btn ghost" id="wx-copy">📋 复制链接</button>'
+        +   '<button class="wx-btn" id="wx-stay">继续在微信玩 ▶</button>'
+        + '</div></div>';
+      document.body.appendChild(d);
+      var __cp = d.querySelector('#wx-copy');
+      if(__cp) __cp.onclick = function(){
+        var url = location.href;
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){ __cp.textContent='✅ 已复制'; }); }
+        else { var t=document.createElement('textarea'); t.value=url; document.body.appendChild(t); t.select(); try{document.execCommand('copy'); __cp.textContent='✅ 已复制';}catch(e){} t.remove(); }
+      };
+      var __sy = d.querySelector('#wx-stay');
+      if(__sy) __sy.onclick = function(){ d.remove(); };
+    } else {
+      var __ico = d.querySelector('.wx-ico'); if(__ico) __ico.textContent = '🎮';
+      var __tt = d.querySelector('.wx-title'); if(__tt) __tt.textContent = '🎮 微信内可直接游玩';
+      var __ss = d.querySelector('.wx-sub');
+      if(__ss) __ss.innerHTML = '已自动适配微信运行；如遇<b>讲读无声</b>或卡顿，<br>点右上角 <b>···</b> → <b>在浏览器打开</b> 体验更佳。';
+      var __st2 = d.querySelector('#wx-stay');
+      if(__st2 && !__st2.onclick) __st2.onclick = function(){ d.remove(); };
+    }
+  }
+  if(document.readyState === 'complete') __wgEnhance();
+  else { window.addEventListener('load', __wgEnhance); setTimeout(__wgEnhance, 600); }
 }catch(e){}
 function paintTile(el, tile){
     const t = TILES[tile.key];
