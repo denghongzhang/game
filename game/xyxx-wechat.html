@@ -1000,6 +1000,118 @@ body.tile-sm .tile .emoji{ font-size:calc(var(--cell, 46px) * 0.84); }
 /* ===== R15：微信登录按键用途小注 ===== */
 .wx-hint{ font-size:10.5px; color:rgba(255,236,200,.75); text-align:center; margin-top:4px;
   letter-spacing:.5px; text-shadow:0 1px 2px rgba(0,0,0,.6); }
+/* ===== R16：首页风格切换（清新放松 / 热血江湖） ===== */
+.style-tabs{ display:flex; gap:8px; width:100%; margin:2px 0; }
+.style-tab{ flex:1; padding:9px 4px; font-size:13.5px; font-weight:800; letter-spacing:1px;
+  border-radius:12px; cursor:pointer; text-align:center; color:#ffe9c8; user-select:none;
+  background:rgba(255,246,225,.08); border:1px solid rgba(255,214,140,.35);
+  text-shadow:0 1px 2px rgba(0,0,0,.45); }
+.style-tab.on{ color:#5a2a06 !important; background:linear-gradient(180deg,#ffe7b3,#ffc66e) !important;
+  border-color:#ffe19a !important; box-shadow:0 0 12px rgba(255,200,90,.5); text-shadow:none; }
+.style-tab.on-hot{ color:#fff3d2 !important; background:linear-gradient(180deg,#c2371f,#7e1c0e) !important;
+  border-color:#ff9a5e !important; box-shadow:0 0 14px rgba(255,90,40,.55); }
+/* ===== R16：热血江湖版 · 冲击波 / 屏闪 / 震屏 / 浮分燃焰 ===== */
+.hot-ring{ position:absolute; border-radius:50%; pointer-events:none; z-index:8;
+  border:3px solid rgba(255,150,60,.92);
+  box-shadow:0 0 18px rgba(255,110,40,.8), inset 0 0 12px rgba(255,180,80,.5);
+  animation:hotRing .55s ease-out forwards; }
+@keyframes hotRing{ 0%{ transform:scale(.15); opacity:1; } 100%{ transform:scale(1); opacity:0; } }
+.hot-flash{ position:fixed; inset:0; pointer-events:none; z-index:60; opacity:0;
+  background:radial-gradient(120% 90% at 50% 55%, rgba(255,120,40,.20), rgba(255,60,20,.09) 55%, transparent 78%);
+  animation:hotFlash .42s ease-out forwards; }
+@keyframes hotFlash{ 0%{ opacity:1; } 100%{ opacity:0; } }
+@keyframes hotShake{ 0%,100%{ transform:translate(0,0); } 25%{ transform:translate(2px,-2px); }
+  55%{ transform:translate(-2px,2px); } 80%{ transform:translate(1px,1px); } }
+body.mode-hot .tile{ filter:saturate(1.4) contrast(1.1) brightness(1.03) !important;
+  outline-color:rgba(255,168,88,.62) !important; }
+body.mode-hot .float-score{ color:#ffd27a; font-weight:900;
+  text-shadow:0 0 9px rgba(255,110,30,.95), 0 2px 3px rgba(0,0,0,.65); }
+/* ===== R16：TTS 声线折叠选择（小圆chip+迷你浮层，不占剧情框空间） ===== */
+#plot-panel{ position:relative; }
+#voice-chip{ position:absolute; right:7px; top:7px; width:28px; height:28px; border-radius:50%;
+  font-size:13px; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:32;
+  background:linear-gradient(180deg,rgba(255,231,179,.95),rgba(255,198,110,.95)); color:#4a2408;
+  border:1px solid rgba(255,214,128,.7); box-shadow:0 2px 6px rgba(0,0,0,.35);
+  -webkit-user-select:none; user-select:none; }
+.voice-pop{ position:absolute; right:7px; top:39px; display:none; gap:5px; z-index:33; padding:6px;
+  background:rgba(30,14,10,.94); border:1px solid rgba(255,214,128,.5); border-radius:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,.5); }
+.voice-pop.show{ display:flex; }
+.voice-pop b{ padding:6px 11px; font-size:12px; font-weight:700; border-radius:9px; cursor:pointer;
+  color:#ffe9c8; background:rgba(255,246,225,.1); border:1px solid rgba(255,214,140,.3); white-space:nowrap; }
+.voice-pop b.on{ color:#5a2a06 !important; background:linear-gradient(180deg,#ffe7b3,#ffc66e) !important;
+  border-color:#ffe19a !important; }
+/* ===== R16：四季·24节气氛围（画布+节气铭牌） ===== */
+#season-fx{ position:fixed; inset:0; pointer-events:none; z-index:55; opacity:.82; }
+.season-badge{ position:fixed; left:8px; bottom:calc(env(safe-area-inset-bottom) + 8px); z-index:56;
+  font-size:10.5px; letter-spacing:1.5px; color:rgba(255,236,200,.85); pointer-events:none;
+  background:rgba(26,12,8,.45); border:1px solid rgba(255,214,140,.25); border-radius:999px;
+  padding:3px 10px; backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+  text-shadow:0 1px 2px rgba(0,0,0,.6); }
+/* 棋盘空白处随季节微染色（对#board加内衬渐晕，不遮挡瓦片） */
+#board-wrap{ position:relative; }
+#board-wrap::after{ content:''; position:absolute; inset:0; pointer-events:none; z-index:2;
+  border-radius:14px; opacity:.5; }
+body.season-spring #board-wrap::after{ background:radial-gradient(90% 70% at 50% 108%, rgba(255,170,205,.16), transparent 62%); }
+body.season-summer #board-wrap::after{ background:radial-gradient(90% 70% at 50% 108%, rgba(150,235,150,.14), transparent 62%); }
+body.season-autumn #board-wrap::after{ background:radial-gradient(90% 70% at 50% 108%, rgba(255,170,90,.17), transparent 62%); }
+body.season-winter #board-wrap::after{ background:radial-gradient(90% 70% at 50% 108%, rgba(190,220,255,.16), transparent 62%); }
+/* ===== R17-①：提示高亮可见化（基线缺失 .tile.hint 样式 → 点提示曾毫无反应） ===== */
+.tile.hint{ z-index:6; animation:hintPulse .55s ease-in-out 3; }
+@keyframes hintPulse{
+  0%,100%{ transform:scale(1); }
+  50%{ transform:scale(1.09);
+    box-shadow:0 0 0 5px #ffe27a, 0 0 28px 12px rgba(255,200,80,.85);
+    filter:brightness(1.38) saturate(1.55); outline-color:#ffe27a; } }
+/* ===== R17-②：顶部图标条统一为悬浮胶囊（华为/QQ/微信各内核排版一致、不再压标题） ===== */
+.top-toggles{ position:absolute; top:max(8px, env(safe-area-inset-top)) !important; right:8px !important;
+  display:flex; gap:6px !important; z-index:20; padding:5px 7px; border-radius:999px;
+  background:rgba(26,12,8,.55); border:1px solid rgba(255,214,140,.28);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+.top-toggles .icon-btn{ width:28px !important; height:28px !important; font-size:13px !important;
+  margin:0 !important; box-shadow:none !important; background:rgba(255,246,225,.10) !important;
+  border:1px solid rgba(255,214,140,.22) !important; color:#ffe9c8 !important; }
+#screen-title.active{ padding-top:max(72px, calc(env(safe-area-inset-top) + 66px)) !important; }
+#screen-title .logo .big{ font-size:clamp(30px, 10.5vw, 44px) !important; }
+/* ===== R17-③：对局设置条（棋盘 6/7/8 + 界面底色） ===== */
+#r17-bar{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px 10px;
+  flex:0 0 auto; margin:4px 0 2px; padding:5px 8px; border-radius:12px; position:relative; z-index:31;
+  background:linear-gradient(180deg, rgba(30,15,10,.72), rgba(30,15,10,.55));
+  border:1px solid rgba(255,214,140,.25); }
+.r17-grp{ display:flex; align-items:center; gap:4px; min-width:0; }
+.r17-lab{ font-size:10px; color:rgba(255,236,200,.82); letter-spacing:1px; white-space:nowrap; }
+.r17-chip{ padding:4px 9px; font-size:11.5px; font-weight:800; border-radius:9px; cursor:pointer;
+  color:#ffe9c8; background:rgba(255,246,225,.08); border:1px solid rgba(255,214,140,.3);
+  white-space:nowrap; -webkit-user-select:none; user-select:none; }
+.r17-chip.on{ color:#5a2a06 !important; background:linear-gradient(180deg,#ffe7b3,#ffc66e) !important;
+  border-color:#ffe19a !important; }
+.r17-dot{ width:20px; height:20px; border-radius:50%; cursor:pointer; border:2px solid rgba(255,255,255,.35);
+  box-shadow:0 1px 4px rgba(0,0,0,.4); -webkit-user-select:none; user-select:none; }
+.r17-dot.on{ border-color:#ffe27a; box-shadow:0 0 8px rgba(255,214,90,.8); }
+/* ===== R17-④：可选界面底色主题（body.bg-*；同时压过基线 #screen-game[data-light] 氛围底色） ===== */
+body.bg-amber #app, body.bg-amber #screen-game{ background:
+  radial-gradient(130% 100% at 50% 50%, transparent 52%, rgba(60,28,4,.5) 100%),
+  radial-gradient(120% 80% at 50% -12%, rgba(255,196,110,.30), transparent 60%),
+  radial-gradient(110% 75% at 50% 112%, rgba(210,100,25,.40), transparent 60%),
+  linear-gradient(160deg,#5e3008 0%,#93511a 46%,#3a1c06 100%) !important; animation:none !important; }
+body.bg-teal #app, body.bg-teal #screen-game{ background:
+  radial-gradient(130% 100% at 50% 50%, transparent 52%, rgba(2,22,18,.55) 100%),
+  radial-gradient(120% 80% at 50% -12%, rgba(120,230,190,.20), transparent 60%),
+  radial-gradient(110% 75% at 50% 112%, rgba(20,110,90,.40), transparent 60%),
+  linear-gradient(160deg,#0d2b25 0%,#1d5748 46%,#071b16 100%) !important; animation:none !important; }
+body.bg-violet #app, body.bg-violet #screen-game{ background:
+  radial-gradient(130% 100% at 50% 50%, transparent 52%, rgba(20,8,40,.55) 100%),
+  radial-gradient(120% 80% at 50% -12%, rgba(190,150,255,.22), transparent 60%),
+  radial-gradient(110% 75% at 50% 112%, rgba(80,40,150,.42), transparent 60%),
+  linear-gradient(160deg,#221041 0%,#452a78 46%,#140826 100%) !important; animation:none !important; }
+body.bg-ivory #app, body.bg-ivory #screen-game{ background:
+  radial-gradient(120% 80% at 50% -12%, rgba(255,255,255,.65), transparent 60%),
+  linear-gradient(165deg,#fdf6e8 0%,#f4e7cc 55%,#e7d3ac 100%) !important; animation:none !important; }
+body.bg-ivory #g-goal-text{ color:#6b3a10 !important; text-shadow:0 1px 2px rgba(255,255,255,.65) !important; }
+body.bg-ivory #boost-info{ color:#6b4a20 !important; text-shadow:none !important; }
+body.bg-ivory #screen-game .hud{ background:linear-gradient(180deg, rgba(96,62,22,.94), rgba(96,62,22,.82)); }
+body.bg-ivory #r17-bar{ background:rgba(96,62,22,.55); }
+body.bg-ivory .game-controls .btn{ background:rgba(96,62,22,.28) !important; text-shadow:0 1px 2px rgba(255,255,255,.3); }
 
 </style>
 <style>
@@ -3769,13 +3881,25 @@ try{
 /* ===== 剧情女声讲读（Web Speech TTS · 说书氛围：女声、慢速、句间停顿） ===== */
 window.__TTS = (function(){
   var timer=null, autoTimer=null, playing=false, btn=null, started=false, epoch=0;
-  var KEY='hlm3x_tts_auto';
+  var KEY='hlm3x_tts_auto', VKEY='hlm3x_voice';
   function autoOn(){ try{ return (localStorage.getItem(KEY)||'1')!=='0'; }catch(e){ return true; } }
   function setAuto(v){ try{ localStorage.setItem(KEY, v?'1':'0'); }catch(e){} }
-  function pickVoice(){
+  /* R16：声线选择（female/male/child，默认女声，持久化） */
+  function voiceKind(){ try{ return localStorage.getItem(VKEY)||'female'; }catch(e){ return 'female'; } }
+  function setVoiceKind(k){ try{ if(['female','male','child'].indexOf(k)>=0) localStorage.setItem(VKEY,k); }catch(e){} }
+  function voiceLabel(){ return {female:'女声',male:'男声',child:'童声'}[voiceKind()]||'女声'; }
+  function pickVoice(kind){
     try{
+      kind = kind || voiceKind();
       var vs = window.speechSynthesis.getVoices() || [];
       var zh = vs.filter(function(v){ return /^zh|cmn|^yue/i.test(v.lang); });
+      if(kind==='male'){
+        var mal = zh.filter(function(v){
+          return /kangkang|yunyang|yunxi|yunjian|yunye|yuanma|male|男/i.test(v.name); });
+        if(mal.length) return mal[0];
+        if(zh.length) return zh[0];
+        return vs[0] || null;
+      }
       var fem = zh.filter(function(v){
         return /xiaoxiao|xiaoyi|yaoyao|tingting|ting-ting|meijia|mei-jia|huihui|wanwan|hanhan| female|女/i.test(v.name); });
       if(fem.length) return fem[0];
@@ -3788,7 +3912,7 @@ window.__TTS = (function(){
     btn.classList.toggle('playing', !!on);
     btn.innerHTML = on
       ? '<span class="tts-eq"><i></i><i></i><i></i></span> 正在讲读 · 点按停止'
-      : '🔊 听剧情 · 女声讲读' + (autoOn() ? '' : '（自动已关）');
+      : '🔊 听剧情 · ' + voiceLabel() + '讲读' + (autoOn() ? '' : '（自动已关）');
   }
   function stop(keepBtn){
     playing=false; started=false; clearTimeout(timer);
@@ -3800,8 +3924,11 @@ window.__TTS = (function(){
     var my = epoch;
     if(i >= sents.length){ stop(); return; }
     var u = new SpeechSynthesisUtterance(sents[i]);
-    var v = pickVoice(); if(v){ u.voice=v; u.lang=v.lang; } else { u.lang='zh-CN'; }
-    u.rate = 0.92; u.pitch = 1.14; u.volume = 1.0;   // 女声·说书语速
+    var __vk = voiceKind();
+    var v = pickVoice(__vk); if(v){ u.voice=v; u.lang=v.lang; } else { u.lang='zh-CN'; }
+    u.rate = 0.92; u.pitch = 1.14; u.volume = 1.0;   // 说书语速·默认女声
+    if(__vk==='male'){ u.rate = 0.9; u.pitch = 0.72; }   // 男声·低沉说书
+    if(__vk==='child'){ u.rate = 1.0; u.pitch = 1.7; }   // 童声·高亮清脆
     u.onstart = function(){ started = true; };
     u.onend = function(){ if(!playing || my!==epoch) return; timer=setTimeout(function(){ speakRest(i+1, sents); }, 240); };
     u.onerror = function(){ if(my===epoch) stop(); };
@@ -3875,7 +4002,8 @@ window.__TTS = (function(){
     }, delay || 900);
   }
   return { start:start, stop:stop, isPlaying:function(){ return playing; }, setBtn:setBtn,
-           autoOn:autoOn, setAuto:setAuto, scheduleAuto:scheduleAuto, collectText:collectText };
+           autoOn:autoOn, setAuto:setAuto, scheduleAuto:scheduleAuto, collectText:collectText,
+           voiceKind:voiceKind, setVoiceKind:setVoiceKind, voiceLabel:voiceLabel };
 })();
 try{
   if(window.speechSynthesis){
@@ -3993,6 +4121,311 @@ try{
     __wh.textContent='微信登录：保存排行榜成绩与联机互助身份 · 当前为体验模式，不发起真实请求';
     if(__wz.parentNode) __wz.parentNode.insertBefore(__wh, __wz.nextSibling);
   }
+}catch(e){}
+/* ===== R16：风格模式（清新放松/热血江湖）+ 剧情化夸奖 + 冲击波 + 声线UI + 四季节气 ===== */
+try{
+var __GK = 'xyxx'.indexOf('xy')===0 ? 'xy' : 'hlm';
+/* ---------- ① 风格模式切换（默认清新放松） ---------- */
+function __getStyle(){ try{ return localStorage.getItem('hlm3x_style')||'fresh'; }catch(e){ return 'fresh'; } }
+function __applyStyle(s){
+  document.body.classList.toggle('mode-hot', s==='hot');
+  var t1=document.getElementById('tab-fresh'), t2=document.getElementById('tab-hot');
+  if(t1) t1.classList.toggle('on', s!=='hot');
+  if(t2) t2.classList.toggle('on-hot', s==='hot');
+}
+__applyStyle(__getStyle());
+var __tm=document.querySelector('#screen-title .title-menu');
+if(__tm && !document.getElementById('tab-fresh')){
+  var __tabs=document.createElement('div'); __tabs.className='style-tabs';
+  __tabs.innerHTML='<div class="style-tab" id="tab-fresh">🌿 清新放松</div><div class="style-tab" id="tab-hot">🔥 热血江湖</div>';
+  __tm.appendChild(__tabs);
+  document.getElementById('tab-fresh').onclick=function(){
+    try{ localStorage.setItem('hlm3x_style','fresh'); }catch(e){}
+    __applyStyle('fresh'); __toast('🌿 清新放松版：轻盈如风'); };
+  document.getElementById('tab-hot').onclick=function(){
+    try{ localStorage.setItem('hlm3x_style','hot'); }catch(e){}
+    __applyStyle('hot'); __toast('🔥 热血江湖版：冲击波已就位！'); };
+  __applyStyle(__getStyle());
+}
+/* ---------- ② 热血江湖：消除冲击波 + 屏闪 + 震屏（监听基线 .spark 粒子） ---------- */
+var __bd=document.getElementById('board');
+if(__bd && typeof MutationObserver!=='undefined'){
+  var __hotT=0;
+  new MutationObserver(function(){
+    if(!document.body.classList.contains('mode-hot')) return;
+    var now=Date.now(); if(now-__hotT<200) return; __hotT=now;
+    var sp=__bd.querySelector('.spark'); if(!sp) return;
+    var r=sp.getBoundingClientRect(), br=__bd.getBoundingClientRect();
+    var sz=Math.max(64, Math.min(150, r.width*6));
+    var ring=document.createElement('div'); ring.className='hot-ring';
+    ring.style.width=sz+'px'; ring.style.height=sz+'px';
+    ring.style.left=(r.left-br.left+r.width/2-sz/2)+'px';
+    ring.style.top=(r.top-br.top+r.height/2-sz/2)+'px';
+    __bd.appendChild(ring); setTimeout(function(){ try{ ring.remove(); }catch(e){} },620);
+    var fl=document.createElement('div'); fl.className='hot-flash'; document.body.appendChild(fl);
+    setTimeout(function(){ try{ fl.remove(); }catch(e){} },520);
+    __bd.style.animation='hotShake .28s ease-in-out';
+    setTimeout(function(){ try{ __bd.style.animation=''; }catch(e){} },320);
+  }).observe(__bd,{childList:true});
+}
+/* ---------- ③ 剧情化诙谐夸奖（通关时按本关剧情关键词定制，分清新/热血两套） ---------- */
+var __PRAISE = {
+ xy: { keys:[
+  ['学艺|方寸|菩提|长生',{f:['菩提祖师捋须而笑：这徒儿，没白教！','斜月三星洞今夜灯火通明，原来在为你庆功～','师父没教别的，就教了一个字：稳！'],h:['七十二变算什么，你这手消除才是真神通！','菩提老祖直呼内行：此子断不可留……对门去！']}],
+  ['龙宫|金箍棒|龙王|定海',{f:['老龙王捧着金箍棒直点头：真命消除师在此！','东海今晚风平浪静，虾兵蟹将全来看你表演～'],h:['定海神针都为你震了三震，龙宫宝库为你敞开！','一消到底，龙王直呼：快请高人收手——是夸你！']}],
+  ['地府|阎|生死簿',{f:['阎王爷翻了翻生死簿：此人命里带"赢"。','判官朱笔一勾：这一关，通关！'],h:['十殿阎君齐起立！生死簿上划掉的是"难关"二字！','幽冥界都镇不住你这波连消！']}],
+  ['天宫|大闹|蟠桃|弼马温',{f:['蟠桃园土地公：这波消得比桃子还甜。','玉帝隔云观战，微微颔首：有点东西。'],h:['大闹天宫算什么，你直接闹穿了这一关！','十万天兵拦得住悟空，拦不住你这一手三消！']}],
+  ['五行山|五指山|压',{f:['五百年等来一个你，这关山不过是纸。','山高？你的分数更高。'],h:['一怒连消，五行山都得挪窝给你让路！','这波操作山崩地裂，佛祖都侧目！']}],
+  ['白骨|三打|妖',{f:['白骨精叹气：变三次也骗不过你。','火眼金睛算什么，你这是"消"眼金睛～'],h:['一消一个准，妖气全灭！','妖怪连夜开会：此人不可招惹！']}],
+  ['火焰山|芭蕉|铁扇',{f:['铁扇公主摇摇扇：这把火被你消得心平气和。','八百里火焰，不如你一屏火花。'],h:['芭蕉扇借到了！连消带闪，火焰都给你助威！','一扇熄八百里，一消定火焰山！']}],
+  ['女儿国|御弟',{f:['女儿国国王含笑目送：御弟哥哥，好手段。','温柔乡里稳如山，通关不带喘～'],h:['万般柔情也挡不住你的通关步伐！']}],
+  ['取经|真经|功德|灵山|佛',{f:['功德+1，距灵山又近一步，佛光为你打call～','这一卷真经上，写满了你的名字。'],h:['九九八十一难算什么！灵山就在下一关！','金光万丈！诸天神佛齐诵：善哉，通关！']}],
+ ], def:{f:['路遥知马力，一消见真章～','通关如取经，步步生莲 🪷','稳、准、轻，好一手"禅"式消除！'],h:['这波连招，燃爆全场！','妖魔鬼怪全清场——痛快！','一键三连，战力拉满，杀他个干干净净！']}},
+ hlm: { keys:[
+  ['进府|黛玉|贾母',{f:['贾母搂着黛玉笑：这孩子，跟这关一样讨人喜欢。','外祖母的疼爱满分，你的操作也满分～'],h:['黛玉进府头一日就技惊四座，你这是开局即封神！']}],
+  ['葬花|花锄',{f:['黛玉荷锄回眸：花开花落，你消得比花还美。','今日葬花词，明日通关曲～'],h:['一朝春尽红颜老？不，你这波消除，花开不败！']}],
+  ['诗社|海棠|菊花|螃蟹|联诗',{f:['海棠诗社众姐妹推举你为"消坛盟主"。','湘云醉卧都笑醒了：这诗意的操作，佩服！'],h:['夺魁！诗社头名非你莫属，凤姐都赶来打赏！']}],
+  ['刘姥姥|宴|进大观园',{f:['刘姥姥乐得合不拢嘴：这关消得比席面还热闹！','老祖宗笑出眼泪：比听戏还精彩～'],h:['大观园的席面都被你掀了——是赢的那种掀！']}],
+  ['元妃|省亲|归省',{f:['元妃隔帘赞道：此关消得雅致，赐！','大观园灯火为你通明一夜～'],h:['省亲盛景算什么，你才是今晚最亮的那道金光！']}],
+  ['宝玉|摔玉|通灵',{f:['宝玉痴痴看你：这操作比我的玉还通灵！','通灵宝玉微光一闪：知音也。'],h:['摔玉算什么，你直接摔碎了这关的难度！']}],
+  ['宝钗|冷香|金锁',{f:['宝钗轻摇团扇：从容不迫，好一个"冷香"手笔。','稳中带雅，正是蘅芜君的做派～'],h:['冷香丸也压不住你这团热火！']}],
+  ['熙凤|凤辣子|协理|理家',{f:['凤姐拨着算盘笑：这个人，比我还麻利！','未见其人先闻其笑——说的就是这波操作。'],h:['凤辣子都自愧不如：这手笔，绝了！']}],
+  ['探春|兴利|除弊',{f:['探春执笔记下：此人理"关"，井井有条。','才自精明志自高，说的就是你～'],h:['改革先锋探春都点赞：这波大刀阔斧，漂亮！']}],
+ ], def:{f:['大观园今日无事，只因难关已被你消解～','诗礼簪缨之族，也服你这手好棋。','淡极始知花更艳——消得从容！'],h:['这一关，被你连消带打拿了下来！','姐妹们都惊了：何方神圣！','烈火烹油鲜花着锦，也不过如此！']}}
+};
+var __oc=document.getElementById('ov-cheer');
+if(__oc && typeof MutationObserver!=='undefined'){
+  new MutationObserver(function(){
+    if(!__oc.classList.contains('cheer-win')) return;
+    var mode=document.body.classList.contains('mode-hot')?'h':'f';
+    var set=__PRAISE[__GK]||{keys:[],def:{f:['漂亮！'],h:['漂亮！']}};
+    var txt='';
+    try{ txt=(document.getElementById('plot-summary')||{}).textContent||''; }catch(e){}
+    if(!txt){ try{ txt=(document.getElementById('g-level-name')||{}).textContent||''; }catch(e){} }
+    var pool=null;
+    try{
+      for(var i=0;i<set.keys.length;i++){
+        if(new RegExp(set.keys[i][0]).test(txt)){ pool=set.keys[i][1][mode]; break; }
+      }
+    }catch(e){}
+    if(!pool) pool=set.def[mode]||['漂亮！'];
+    var line=pool[Math.floor(Math.random()*pool.length)];
+    setTimeout(function(){ try{ __oc.textContent=line; }catch(e){} }, 60);
+  }).observe(__oc,{childList:true,characterData:true,subtree:true});
+}
+/* ---------- ④ TTS 声线折叠选择（小chip，默认女声） ---------- */
+var __pp2=document.getElementById('plot-panel');
+if(__pp2 && window.__TTS && !document.getElementById('voice-chip')){
+  var chip=document.createElement('div'); chip.id='voice-chip'; chip.title='切换讲读声线'; chip.textContent='🎙';
+  var pop=document.createElement('div'); pop.className='voice-pop'; pop.id='voice-pop';
+  pop.innerHTML='<b data-k="female">女声</b><b data-k="male">男声</b><b data-k="child">童声</b>';
+  __pp2.appendChild(pop); __pp2.appendChild(chip);
+  var __refresh=function(){
+    var k=window.__TTS.voiceKind();
+    pop.querySelectorAll('b').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-k')===k); });
+  };
+  chip.onclick=function(ev){ ev.stopPropagation(); pop.classList.toggle('show'); __refresh(); };
+  pop.addEventListener('click',function(ev){
+    var b=ev.target; while(b && b.tagName!=='B') b=b.parentNode;
+    if(!b) return;
+    window.__TTS.setVoiceKind(b.getAttribute('data-k'));
+    window.__TTS.setBtn(false); __refresh();
+    pop.classList.remove('show');
+    __toast('讲读声线已切换为「'+b.textContent+'」');
+  });
+  document.addEventListener('click',function(){ pop.classList.remove('show'); });
+  __refresh();
+}
+/* ---------- ⑤ 四季 + 24节气氛围（自动按日期判定，画布粒子+节气铭牌） ---------- */
+try{
+  var __TERMS=[[1,5,'小寒'],[1,20,'大寒'],[2,4,'立春'],[2,19,'雨水'],[3,5,'惊蛰'],[3,20,'春分'],
+    [4,4,'清明'],[4,20,'谷雨'],[5,5,'立夏'],[5,21,'小满'],[6,5,'芒种'],[6,21,'夏至'],
+    [7,7,'小暑'],[7,22,'大暑'],[8,7,'立秋'],[8,23,'处暑'],[9,7,'白露'],[9,23,'秋分'],
+    [10,8,'寒露'],[10,23,'霜降'],[11,7,'立冬'],[11,22,'小雪'],[12,7,'大雪'],[12,21,'冬至']];
+  var __d=new Date(), __mo=__d.getMonth()+1, __da=__d.getDate();
+  var __season='winter', __term='冬至';
+  for(var ti=0;ti<__TERMS.length;ti++){
+    var t=__TERMS[ti];
+    if(__mo>t[0] || (__mo===t[0] && __da>=t[1])){
+      __term=t[2];
+      __season=(ti>=2&&ti<=7)?'spring':(ti>=8&&ti<=13)?'summer':(ti>=14&&ti<=19)?'autumn':'winter';
+    }
+  }
+  document.body.classList.add('season-'+__season);
+  document.body.setAttribute('data-term',__term);
+  var __SE_ICON={spring:'🌸',summer:'☀️',autumn:'🍂',winter:'❄️'};
+  var __badge=document.createElement('div'); __badge.className='season-badge';
+  __badge.textContent=__SE_ICON[__season]+' 今日'+__term+' · '+{spring:'春',summer:'夏',autumn:'秋',winter:'冬'}[__season]+'';
+  document.body.appendChild(__badge);
+  /* 节气氛围画布：四季粒子 + 部分节气加成 */
+  var cv=document.createElement('canvas'); cv.id='season-fx'; document.body.appendChild(cv);
+  var cx=cv.getContext('2d');
+  function __rsz(){ cv.width=window.innerWidth; cv.height=window.innerHeight; }
+  __rsz(); window.addEventListener('resize',__rsz);
+  var __RAIN=/^(清明|谷雨|雨水)$/.test(__term);
+  var __SNOWY=/^(大雪|冬至|小雪|大寒|小寒)$/.test(__term);
+  var __N={spring:24,summer:15,autumn:22,winter:__SNOWY?36:24}[__season]||22;
+  var __COL={spring:['255,183,213','255,214,165','198,232,255'],
+             summer:['186,255,170','255,240,150','140,225,255'],
+             autumn:['255,160,70','230,120,50','255,200,110'],
+             winter:['235,245,255','200,220,250','255,255,255']}[__season];
+  var __ps=[];
+  for(var pi=0;pi<__N;pi++){
+    __ps.push({ x:Math.random()*cv.width, y:Math.random()*cv.height,
+      s:2.2+Math.random()*3.4, v:.35+Math.random()*.85, d:Math.random()*Math.PI*2,
+      w:.006+Math.random()*.012, c:__COL[pi%__COL.length], o:.4+Math.random()*.45 });
+  }
+  var __rain=[];
+  if(__RAIN){ for(var ri=0;ri<14;ri++) __rain.push({x:Math.random()*cv.width,y:Math.random()*cv.height,l:7+Math.random()*9,v:3.2+Math.random()*2}); }
+  var __ff=0;
+  function __tick(){
+    __ff++;
+    if(document.hidden){ requestAnimationFrame(__tick); return; }
+    cx.clearRect(0,0,cv.width,cv.height);
+    var W=cv.width,H=cv.height;
+    for(var i=0;i<__ps.length;i++){
+      var p=__ps[i];
+      p.y+=p.v; p.d+=p.w; p.x+=Math.sin(p.d)*.55;
+      if(p.y>H+8){ p.y=-8; p.x=Math.random()*W; }
+      if(p.x>W+8) p.x=-8; if(p.x<-8) p.x=W+8;
+      cx.save();
+      cx.translate(p.x,p.y); cx.rotate(p.d);
+      if(__season==='winter'){
+        cx.beginPath(); cx.arc(0,0,p.s*.85,0,Math.PI*2);
+        cx.fillStyle='rgba('+p.c+','+p.o+')'; cx.shadowColor='rgba('+p.c+',.9)'; cx.shadowBlur=4; cx.fill();
+      } else if(__season==='summer'){
+        var tw=(Math.sin(__ff*.06+i)+1)/2;
+        cx.beginPath(); cx.arc(0,0,p.s*.55+tw*1.1,0,Math.PI*2);
+        cx.fillStyle='rgba('+p.c+','+(p.o*(.35+tw*.65))+')'; cx.shadowColor='rgba('+p.c+',1)'; cx.shadowBlur=8; cx.fill();
+      } else { /* 春花瓣 / 秋落叶：旋转椭圆 */
+        cx.beginPath(); cx.ellipse(0,0,p.s*1.25,p.s*.62,0,0,Math.PI*2);
+        cx.fillStyle='rgba('+p.c+','+p.o+')'; cx.fill();
+      }
+      cx.restore();
+    }
+    if(__RAIN){
+      cx.strokeStyle='rgba(190,215,255,.42)'; cx.lineWidth=1;
+      for(var rj=0;rj<__rain.length;rj++){
+        var rn=__rain[rj];
+        cx.beginPath(); cx.moveTo(rn.x,rn.y); cx.lineTo(rn.x-2,rn.y+rn.l); cx.stroke();
+        rn.y+=rn.v; rn.x-=.35;
+        if(rn.y>H+12){ rn.y=-12; rn.x=Math.random()*W; }
+      }
+    }
+    requestAnimationFrame(__tick);
+  }
+  requestAnimationFrame(__tick);
+}catch(e){}
+}catch(e){}
+/* ===== R17-A：通关界面 · 棋盘尺寸(6/7/8，默认6×6)与底色主题设置条 ===== */
+try{
+  var __BS_KEY='hlm3x_bsz', __BG_KEY='hlm3x_bgg';
+  var __BGS=['bg-amber','bg-teal','bg-violet','bg-ivory'];
+  function __getBS(){ try{ var v=parseInt(localStorage.getItem(__BS_KEY)||'6',10); return [6,7,8].indexOf(v)>=0?v:6; }catch(e){ return 6; } }
+  function __getBG(){ try{ var v=localStorage.getItem(__BG_KEY)||''; return __BGS.indexOf(v)>=0?v:''; }catch(e){ return ''; } }
+  function __applyBG(v){
+    __BGS.forEach(function(k){ document.body.classList.remove(k); });
+    if(v) document.body.classList.add(v);
+  }
+  __applyBG(__getBG());
+  /* 包装 Game.start：按所选尺寸强制棋盘格数（借道基线适老类瞬时设置、start 返回即还原，不动基线一行代码）
+     注入点位于 Game IIFE 内部，window.Game 尚未赋值 → 延迟一拍再挂包装 */
+  var __lastStart=null;
+  function __patchStart(){
+    if(!(window.Game && !window.Game.__bszPatched)) return;
+    var __origStart = window.Game.start.bind(window.Game);
+    window.Game.start = function(idx, hero, ph, diff){
+      __lastStart = [idx, hero, ph, (diff==='hard')?'hard':'easy'];
+      var b=document.body, hadE=b.classList.contains('elderly'), hadL=b.classList.contains('elderly-lg');
+      var bs=__getBS();
+      b.classList.remove('elderly','elderly-lg');
+      if(bs===6) b.classList.add('elderly-lg'); else if(bs===7) b.classList.add('elderly');
+      try{ return __origStart(idx, hero, ph, diff); }
+      finally{
+        b.classList.remove('elderly','elderly-lg');
+        if(hadE) b.classList.add('elderly');
+        if(hadL) b.classList.add('elderly-lg');
+        setTimeout(function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }, 80);
+        setTimeout(function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }, 420);
+      }
+    };
+    window.Game.__bszPatched = true;
+  }
+  if(window.Game) __patchStart(); else setTimeout(__patchStart, 0);
+  /* 设置条 UI：插入对局屏 HUD 下方 */
+  var __hud=document.querySelector('#screen-game .hud');
+  if(__hud && !document.getElementById('r17-bar')){
+    var bar=document.createElement('div'); bar.id='r17-bar';
+    var bs0=__getBS(), bg0=__getBG();
+    var chips='';
+    [6,7,8].forEach(function(n){ chips+='<span class="r17-chip'+(bs0===n?' on':'')+'" data-bs="'+n+'">'+n+'×'+n+'</span>'; });
+    var dots='<span class="r17-dot'+(bg0===''?' on':'')+'" data-bg="" style="background:linear-gradient(160deg,#2a0f0c,#7a3418)" title="经典暗金"></span>'
+      +'<span class="r17-dot'+(bg0==='bg-amber'?' on':'')+'" data-bg="bg-amber" style="background:linear-gradient(160deg,#8a4a12,#e2922a)" title="琥珀暖宫"></span>'
+      +'<span class="r17-dot'+(bg0==='bg-teal'?' on':'')+'" data-bg="bg-teal" style="background:linear-gradient(160deg,#123c34,#2e8a72)" title="黛青竹韵"></span>'
+      +'<span class="r17-dot'+(bg0==='bg-violet'?' on':'')+'" data-bg="bg-violet" style="background:linear-gradient(160deg,#2a1450,#6a46b0)" title="紫气东来"></span>'
+      +'<span class="r17-dot'+(bg0==='bg-ivory'?' on':'')+'" data-bg="bg-ivory" style="background:linear-gradient(160deg,#fdf6e8,#dcbf8a)" title="月白宣纸"></span>';
+    bar.innerHTML='<div class="r17-grp"><span class="r17-lab">▦ 棋盘</span>'+chips+'</div>'
+      +'<div class="r17-grp"><span class="r17-lab">🎨 底色</span>'+dots+'</div>';
+    __hud.parentNode.insertBefore(bar, __hud.nextSibling);
+    bar.addEventListener('click', function(ev){
+      var c=ev.target;
+      if(c.classList && c.classList.contains('r17-chip')){
+        var n=parseInt(c.getAttribute('data-bs'),10);
+        if(__getBS()===n) return;
+        try{ localStorage.setItem(__BS_KEY, String(n)); }catch(e){}
+        bar.querySelectorAll('.r17-chip').forEach(function(x){ x.classList.toggle('on', parseInt(x.getAttribute('data-bs'),10)===n); });
+        if(window.Game && window.Game.isPlaying && window.Game.isPlaying() && __lastStart){
+          try{ window.__TTS && window.__TTS.stop(); }catch(e){}
+          try{ window.Game.start(__lastStart[0], __lastStart[1], __lastStart[2], __lastStart[3]); }catch(e){}
+          setTimeout(function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }, 300);
+          __toast('▦ 棋盘已切换为 '+n+'×'+n+'（本关重新开始）');
+        } else {
+          __toast('▦ 已选 '+n+'×'+n+'，进关后生效');
+        }
+        return;
+      }
+      if(c.classList && c.classList.contains('r17-dot')){
+        var v=c.getAttribute('data-bg')||'';
+        try{ localStorage.setItem(__BG_KEY, v); }catch(e){}
+        __applyBG(v);
+        bar.querySelectorAll('.r17-dot').forEach(function(x){ x.classList.toggle('on', (x.getAttribute('data-bg')||'')===v); });
+        __toast('🎨 界面底色已切换');
+      }
+    });
+  }
+}catch(e){}
+/* ===== R17-B：提示按键成功反馈 + 节气铭牌避让（不再压住底部文字/按键） ===== */
+try{
+  var __bh=document.getElementById('btn-hint');
+  if(__bh) __bh.addEventListener('click', function(){
+    try{
+      if(window.Game && Game.isPlaying() && !__bh.classList.contains('used-up')){
+        setTimeout(function(){ __toast('💡 已点亮可消除的方块（金光闪烁处）'); }, 80);
+      }
+    }catch(e){}
+  });
+  var __badge=document.querySelector('.season-badge');
+  var __sg2=document.getElementById('screen-game');
+  if(__badge && __sg2 && typeof MutationObserver!=='undefined'){
+    new MutationObserver(function(){
+      var on = __sg2.classList.contains('active');
+      __badge.style.display = on ? 'none' : 'flex';
+      __badge.style.bottom = 'calc(env(safe-area-inset-bottom) + 44px)';
+    }).observe(__sg2,{attributes:true, attributeFilter:['class']});
+  }
+}catch(e){}
+/* ===== R17-C：讲读语音体检（无中文语音引擎的浏览器提前明示，不再"点了没声"干等） ===== */
+try{
+  setTimeout(function(){
+    if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){
+      __toast('ℹ️ 当前浏览器不支持语音讲读，建议用华为/系统浏览器打开'); return;
+    }
+    var vs=[]; try{ vs=window.speechSynthesis.getVoices()||[]; }catch(e){}
+    var zh=vs.filter(function(v){ return /^zh|cmn|^yue/i.test(v.lang||''); });
+    if(vs.length && !zh.length){
+      __toast('ℹ️ 当前浏览器缺少中文语音引擎，讲读可能无声，建议更换浏览器');
+    }
+  }, 2600);
 }catch(e){}
 function paintTile(el, tile){
     const t = TILES[tile.key];
