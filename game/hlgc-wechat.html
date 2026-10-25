@@ -3783,8 +3783,39 @@ window.__TTS = (function(){
   }
   function stop(keepBtn){
     playing=false; started=false; clearTimeout(timer);
+    stopCloud();
     try{ window.speechSynthesis.cancel(); }catch(e){}
     if(keepBtn!==false) setBtn(false);
+  }
+  /* ===== R19：云端预生成语音（edge-tts MP3，随包发布） =====
+     华为/QQ 等浏览器缺中文语音引擎 → speechSynthesis 必无声。
+     每关每声线一个 MP3（tts/hlmm/{关数}-{female|male|child}.mp3），云端优先、合成兜底。 */
+  var cloudAudio=null;
+  function levelIdxNow(){ try{ return (typeof levelIdx==='number')? levelIdx : -1; }catch(e){ return -1; } }
+  function cloudURL(vk){
+    var li=levelIdxNow(); if(li<0) return null;
+    return 'tts/hlmm/' + (li+1) + '-' + (vk||voiceKind()) + '.mp3';
+  }
+  function stopCloud(){ try{ if(cloudAudio){ cloudAudio.pause(); cloudAudio.removeAttribute('src'); } }catch(e){} cloudAudio=null; }
+  function playCloud(url, sents){
+    var my = epoch;
+    stopCloud();
+    var el; try{ el = new Audio(url); }catch(e){ return false; }
+    cloudAudio = el;
+    el.onplaying = function(){ if(my===epoch) started=true; };
+    el.onended = function(){ if(my===epoch) stop(); };
+    el.onerror = function(){
+      if(my!==epoch) return;
+      cloudAudio=null; playing=false; started=false;
+      __synthStart(sents);           /* 云端不可用（离线/文件缺失）→ 本地合成兜底 */
+    };
+    var pr; try{ pr = el.play(); }catch(e){ cloudAudio=null; playing=false; started=false; __synthStart(sents); return true; }
+    if(pr && pr.catch) pr.catch(function(){
+      if(my!==epoch) return;
+      cloudAudio=null; playing=false; started=false;
+      __synthStart(sents);
+    });
+    return true;
   }
   function speakRest(i, sents){
     if(!playing) return;
@@ -3794,9 +3825,16 @@ window.__TTS = (function(){
     var u = mkU(sents[i], sents, i, my);
     try{ window.speechSynthesis.resume(); window.speechSynthesis.speak(u); }catch(e){ stop(); }
   }
-  /* R18：声线即时生效——正在讲读时切换 女声/男声/童声，从当前句无缝续读 */
+  /* R19：声线即时生效——正在讲读时切换 女声/男声/童声：
+     云端播放中 → 立即换对应声线的 MP3 重播本关；合成播放中 → 从当前句无缝续读 */
   function applyVoiceNow(){
-    if(!playing || !curSents.length) return;
+    if(!playing) return;
+    if(cloudAudio){
+      var url = cloudURL();
+      epoch++; started=false;
+      if(url){ playCloud(url, curSents); return; }
+    }
+    if(!curSents.length) return;
     epoch++; started=false; clearTimeout(timer);
     try{ window.speechSynthesis.cancel(); }catch(e){}
     var my=epoch;
@@ -3807,15 +3845,12 @@ window.__TTS = (function(){
     }, 200);
   }
   function start(text){
-    if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){
+    if(!window.speechSynthesis && !window.Audio){
       try{ if(window.toast) window.toast('当前浏览器不支持语音朗读'); }catch(e){}
       return;
     }
     stop(false);
     epoch++;
-    // 预热：部分内核 getVoices 首次为空 / 处于 paused 态
-    try{ window.speechSynthesis.resume(); }catch(e){}
-    try{ window.speechSynthesis.getVoices(); }catch(e){}
     var segs = text.replace(/\s+/g,' ').split(/([。！？；…])/), sents=[];
     for(var i=0;i<segs.length;i+=2){
       var s = (segs[i]+(segs[i+1]||'')).trim();
@@ -3824,6 +3859,22 @@ window.__TTS = (function(){
     if(!sents.length) return;
     playing=true; started=false; setBtn(true);
     curSents=sents; curIdx=0;
+    /* R19：云端 MP3 优先（音质稳、不依赖本机语音引擎）；失败自动落回本地合成 */
+    var __cu = cloudURL();
+    if(__cu && playCloud(__cu, sents)) return;
+    __synthStart(sents);
+  }
+  /* R18 本地合成路径（云端不可用时兜底）：预热 + 无声检测 + 二次重试 */
+  function __synthStart(sents){
+    if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){
+      try{ if(window.toast) window.toast('当前环境无语音引擎，且语音文件不可用'); }catch(e){}
+      stop(); return;
+    }
+    epoch++;
+    // 预热：部分内核 getVoices 首次为空 / 处于 paused 态
+    try{ window.speechSynthesis.resume(); }catch(e){}
+    try{ window.speechSynthesis.getVoices(); }catch(e){}
+    playing=true; started=false; setBtn(true);
     /* R18 无声修复①：cancel() 后立刻 speak() 在部分内核会被吞掉 → 延时一拍再开口 */
     setTimeout(function(){
       if(playing && !started) speakRest(0, sents);
@@ -4191,30 +4242,26 @@ try{
     if(v) document.body.classList.add(v);
   }
   __applyBG(__getBG());
-  /* 包装 Game.start：按所选尺寸强制棋盘格数（借道基线适老类瞬时设置、start 返回即还原，不动基线一行代码）
-     注入点位于 Game IIFE 内部，window.Game 尚未赋值 → 延迟一拍再挂包装 */
+  /* R19：重绑定 Game IIFE 内部 start（函数声明提升、绑定可变）——通关「下一回」闭包
+     调用的正是这个内部 start，包装它才能让每一关都按所选棋盘尺寸（默认6×6）进入。
+     借道基线适老类瞬时设置：start 内部实时读 body.elderly/elderly-lg 决定 7×7/6×6，返回即还原。 */
   var __lastStart=null;
-  function __patchStart(){
-    if(!(window.Game && !window.Game.__bszPatched)) return;
-    var __origStart = window.Game.start.bind(window.Game);
-    window.Game.start = function(idx, hero, ph, diff){
-      __lastStart = [idx, hero, ph, (diff==='hard')?'hard':'easy'];
-      var b=document.body, hadE=b.classList.contains('elderly'), hadL=b.classList.contains('elderly-lg');
-      var bs=__getBS();
+  var __origStart = start;   /* 基线内部 start（本注入点位于 Game IIFE 内、paintTile 之前） */
+  start = function(idx, hero, ph, diff){
+    __lastStart = [idx, hero, ph, (diff==='hard')?'hard':'easy'];
+    var b=document.body, hadE=b.classList.contains('elderly'), hadL=b.classList.contains('elderly-lg');
+    var bs=__getBS();
+    b.classList.remove('elderly','elderly-lg');
+    if(bs===6) b.classList.add('elderly-lg'); else if(bs===7) b.classList.add('elderly');
+    try{ return __origStart(idx, hero, ph, diff); }
+    finally{
       b.classList.remove('elderly','elderly-lg');
-      if(bs===6) b.classList.add('elderly-lg'); else if(bs===7) b.classList.add('elderly');
-      try{ return __origStart(idx, hero, ph, diff); }
-      finally{
-        b.classList.remove('elderly','elderly-lg');
-        if(hadE) b.classList.add('elderly');
-        if(hadL) b.classList.add('elderly-lg');
-        setTimeout(function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }, 80);
-        setTimeout(function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }, 420);
-      }
-    };
-    window.Game.__bszPatched = true;
-  }
-  if(window.Game) __patchStart(); else setTimeout(__patchStart, 0);
+      if(hadE) b.classList.add('elderly');
+      if(hadL) b.classList.add('elderly-lg');
+      setTimeout(function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }, 80);
+      setTimeout(function(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }, 420);
+    }
+  };
   /* R18 设置面板 UI：右侧悬浮折叠（⚙圆钮 → 下拉面板），不占剧情/棋盘布局空间 */
   var __hud=document.querySelector('#screen-game .hud');
   if(__hud && !document.getElementById('r18-fab')){
