@@ -3932,9 +3932,11 @@ window.__TTS = (function(){
     var u = new SpeechSynthesisUtterance(text);
     var __vk = voiceKind();
     var v = pickVoice(__vk); if(v){ u.voice=v; u.lang=v.lang; } else { u.lang='zh-CN'; }
-    u.rate = 0.92; u.pitch = 1.14; u.volume = 1.0;   // 说书语速·默认女声
-    if(__vk==='male'){ u.rate = 0.9; u.pitch = 0.72; }   // 男声·低沉说书
-    if(__vk==='child'){ u.rate = 1.0; u.pitch = 1.7; }   // 童声·高亮清脆
+    // 本地合成兜底语速/音调（仅当云端MP3缺失时由 speechSynthesis 触发）
+    // 与 gen_tts2.py 的 edge-tts 速率是两套独立参数（女声稍慢／男声低沉／童声轻快），可按真机听感微调
+    var TTS_RATE = { female:[0.92,1.14], male:[0.9,0.72], child:[1.0,1.7] };
+    var __rp = TTS_RATE[__vk] || TTS_RATE.female;
+    u.rate = __rp[0]; u.pitch = __rp[1]; u.volume = 1.0;
     u.onstart = function(){ started = true; };
     u.onend = function(){ if(!playing || my!==epoch) return; curIdx=idx+1; timer=setTimeout(function(){ speakRest(idx+1, sents); }, 240); };
     u.onerror = function(){ if(my===epoch) stop(); };
@@ -4552,7 +4554,7 @@ try{
       d.innerHTML = '<div class="wx-card">'
         + '<div class="wx-ico">🎮</div>'
         + '<div class="wx-title">微信内可直接游玩</div>'
-        + '<div class="wx-sub">已自动适配微信运行；如遇<b>讲读无声</b>或卡顿，<br>点右上角 <b>···</b> → <b>在浏览器打开</b> 体验更佳。</div>'
+        + '<div class="wx-sub">已自动适配微信运行；如遇<b>讲读无声</b>或卡顿，<br>点右上角 <b>···</b> → <b>在浏览器打开</b> 体验更佳。<br><br>📲 浏览器打开后，可「分享 → 添加到主屏幕」，<b>断网也能玩</b>、讲读离线可听。</div>'
         + '<div class="wx-actions">'
         +   '<button class="wx-btn ghost" id="wx-copy">📋 复制链接</button>'
         +   '<button class="wx-btn" id="wx-stay">继续在微信玩 ▶</button>'

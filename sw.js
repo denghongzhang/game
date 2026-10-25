@@ -16,10 +16,21 @@ const CORE_ASSETS = [
   './扫码进入-红楼西游三消乐-R15.png'
 ];
 
+// 首关讲读预缓存：每游戏前 6 关 × 三声线，断网后未播过的首关也能离线听
+// （其余关卡讲读由运行时缓存按需补全：播过即离线可重听）
+const PRELOAD_TTS = [];
+for (const pk of ['hlmm', 'xyxx']) {
+  for (let n = 1; n <= 6; n++) {
+    for (const vk of ['female', 'male', 'child']) {
+      PRELOAD_TTS.push(`./tts/${pk}/${n}-${vk}.mp3`);
+    }
+  }
+}
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CORE_CACHE)
-      .then((cache) => cache.addAll(CORE_ASSETS))
+      .then((cache) => cache.addAll(CORE_ASSETS.concat(PRELOAD_TTS)))
       .then(() => self.skipWaiting())
   );
 });
